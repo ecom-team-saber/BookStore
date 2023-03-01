@@ -1,3 +1,13 @@
+const {
+  User,
+  db,
+  Product,
+  Order,
+  OrderItem,
+  UserAddress,
+  Category,
+} = require("./db/index");
+
 const books = [
   {
     title: "Things Fall Apart",
@@ -900,3 +910,289 @@ const books = [
     inventory: 9,
   },
 ];
+const orders = [
+  { status: "pending" },
+  { status: "cart" },
+  { status: "pending" },
+  { status: "pending" },
+  { status: "complete" },
+  { status: "cart" },
+  { status: "pending" },
+  { status: "cart" },
+  { status: "cart" },
+  { status: "complete" },
+  { status: "pending" },
+  { status: "complete" },
+  { status: "cart" },
+  { status: "pending" },
+  { status: "pending" },
+  { status: "pending" },
+  { status: "complete" },
+  { status: "pending" },
+  { status: "cart" },
+  { status: "complete" },
+  { status: "pending" },
+  { status: "complete" },
+  { status: "cart" },
+  { status: "pending" },
+  { status: "complete" },
+  { status: "pending" },
+  { status: "cart" },
+  { status: "pending" },
+  { status: "complete" },
+  { status: "complete" },
+];
+
+const orderItems = [
+  { productId: 55, orderId: 1, quantity: 7 },
+  { productId: 33, orderId: 2, quantity: 9 },
+  { productId: 29, orderId: 3, quantity: 12 },
+  { productId: 8, orderId: 4, quantity: 18 },
+  { productId: 58, orderId: 5, quantity: 14 },
+  { productId: 78, orderId: 6, quantity: 11 },
+  { productId: 95, orderId: 7, quantity: 7 },
+  { productId: 67, orderId: 8, quantity: 1 },
+  { productId: 54, orderId: 9, quantity: 6 },
+  { productId: 59, orderId: 10, quantity: 13 },
+  { productId: 93, orderId: 11, quantity: 15 },
+  { productId: 50, orderId: 12, quantity: 7 },
+  { productId: 62, orderId: 13, quantity: 18 },
+  { productId: 42, orderId: 14, quantity: 17 },
+  { productId: 66, orderId: 15, quantity: 14 },
+  { productId: 56, orderId: 16, quantity: 2 },
+  { productId: 49, orderId: 17, quantity: 19 },
+  { productId: 43, orderId: 18, quantity: 17 },
+  { productId: 17, orderId: 19, quantity: 8 },
+  { productId: 22, orderId: 20, quantity: 1 },
+  { productId: 55, orderId: 21, quantity: 9 },
+  { productId: 31, orderId: 22, quantity: 13 },
+  { productId: 48, orderId: 23, quantity: 15 },
+  { productId: 93, orderId: 24, quantity: 16 },
+  { productId: 32, orderId: 25, quantity: 13 },
+  { productId: 30, orderId: 26, quantity: 14 },
+  { productId: 61, orderId: 27, quantity: 6 },
+  { productId: 59, orderId: 28, quantity: 8 },
+  { productId: 10, orderId: 29, quantity: 2 },
+  { productId: 68, orderId: 30, quantity: 10 },
+  { productId: 26, orderId: 1, quantity: 15 },
+  { productId: 63, orderId: 2, quantity: 1 },
+  { productId: 24, orderId: 3, quantity: 15 },
+  { productId: 56, orderId: 4, quantity: 18 },
+  { productId: 23, orderId: 5, quantity: 15 },
+  { productId: 29, orderId: 6, quantity: 19 },
+  { productId: 29, orderId: 7, quantity: 17 },
+  { productId: 14, orderId: 8, quantity: 17 },
+  { productId: 46, orderId: 9, quantity: 9 },
+  { productId: 88, orderId: 10, quantity: 5 },
+  { productId: 41, orderId: 11, quantity: 6 },
+  { productId: 19, orderId: 12, quantity: 8 },
+  { productId: 34, orderId: 13, quantity: 9 },
+  { productId: 55, orderId: 14, quantity: 4 },
+  { productId: 37, orderId: 15, quantity: 3 },
+  { productId: 94, orderId: 16, quantity: 11 },
+  { productId: 13, orderId: 17, quantity: 13 },
+  { productId: 60, orderId: 18, quantity: 10 },
+  { productId: 41, orderId: 19, quantity: 11 },
+  { productId: 81, orderId: 20, quantity: 16 },
+  { productId: 13, orderId: 21, quantity: 14 },
+  { productId: 14, orderId: 22, quantity: 19 },
+  { productId: 71, orderId: 23, quantity: 4 },
+  { productId: 97, orderId: 24, quantity: 8 },
+  { productId: 76, orderId: 25, quantity: 12 },
+  { productId: 25, orderId: 26, quantity: 15 },
+  { productId: 58, orderId: 27, quantity: 13 },
+  { productId: 24, orderId: 28, quantity: 17 },
+  { productId: 93, orderId: 29, quantity: 14 },
+  { productId: 38, orderId: 30, quantity: 17 },
+  { productId: 89, orderId: 1, quantity: 2 },
+  { productId: 29, orderId: 2, quantity: 3 },
+  { productId: 47, orderId: 3, quantity: 2 },
+  { productId: 33, orderId: 4, quantity: 19 },
+  { productId: 92, orderId: 5, quantity: 5 },
+  { productId: 57, orderId: 6, quantity: 9 },
+  { productId: 92, orderId: 7, quantity: 14 },
+  { productId: 32, orderId: 8, quantity: 6 },
+  { productId: 41, orderId: 9, quantity: 19 },
+  { productId: 4, orderId: 10, quantity: 6 },
+  { productId: 79, orderId: 11, quantity: 19 },
+  { productId: 74, orderId: 12, quantity: 8 },
+  { productId: 78, orderId: 13, quantity: 17 },
+  { productId: 32, orderId: 14, quantity: 2 },
+  { productId: 93, orderId: 15, quantity: 8 },
+  { productId: 2, orderId: 16, quantity: 15 },
+  { productId: 80, orderId: 17, quantity: 5 },
+  { productId: 57, orderId: 18, quantity: 13 },
+  { productId: 67, orderId: 19, quantity: 5 },
+  { productId: 51, orderId: 20, quantity: 17 },
+  { productId: 91, orderId: 21, quantity: 20 },
+  { productId: 47, orderId: 22, quantity: 13 },
+  { productId: 44, orderId: 23, quantity: 13 },
+  { productId: 36, orderId: 24, quantity: 2 },
+  { productId: 87, orderId: 25, quantity: 15 },
+  { productId: 73, orderId: 26, quantity: 1 },
+  { productId: 84, orderId: 27, quantity: 10 },
+  { productId: 55, orderId: 28, quantity: 18 },
+  { productId: 23, orderId: 29, quantity: 6 },
+  { productId: 18, orderId: 30, quantity: 19 },
+];
+
+const users = [
+  {
+    username: "jawty0",
+    password: "3EzCMPJGog",
+    name: "Jeanna Awty",
+    email: "jawty0@sina.com.cn",
+    userType: "member",
+  },
+  {
+    username: "gleyland1",
+    password: "miELyQ",
+    name: "Gerry Leyland",
+    email: "gleyland1@europa.eu",
+    userType: "admin",
+  },
+  {
+    username: "hbril2",
+    password: "DYC1vMd",
+    name: "Halette Bril",
+    email: "hbril2@google.pl",
+    userType: "admin",
+  },
+  {
+    username: "ftefft3",
+    password: "RONCuU",
+    name: "Findley Tefft",
+    email: "ftefft3@forbes.com",
+    userType: "member",
+  },
+  {
+    username: "rstroobant4",
+    password: "RUkSdg",
+    name: "Rube Stroobant",
+    email: "rstroobant4@ifeng.com",
+    userType: "member",
+  },
+];
+
+const userAddress = [
+  {
+    addressLine1: "35433 Oak Valley Hill",
+    city: "Chicago",
+    postalCode: "60674",
+    country: "United States",
+    mobile: "312-169-2841",
+    userId: 2,
+  },
+  {
+    addressLine1: "0536 Dorton Way",
+    city: "Yonkers",
+    postalCode: "10705",
+    country: "United States",
+    mobile: "914-926-1368",
+    userId: 3,
+  },
+  {
+    addressLine1: "78 Spaight Alley",
+    city: "Greensboro",
+    postalCode: "27404",
+    country: "United States",
+    mobile: "336-727-4863",
+    userId: 4,
+  },
+  {
+    addressLine1: "68524 Anthes Crossing",
+    city: "Tampa",
+    postalCode: "33615",
+    country: "United States",
+    mobile: "813-189-5252",
+    userId: 1,
+  },
+  {
+    addressLine1: "71908 Heath Terrace",
+    city: "Baltimore",
+    postalCode: "21239",
+    country: "United States",
+    mobile: "443-875-0969",
+    userId: 5,
+  },
+];
+
+const categories = [
+  "fiction",
+  "nonfiction",
+  "history",
+  "sci-fi",
+  "horror",
+  "manga",
+  "philosophy",
+];
+
+// const seed = async () => {
+//   try {
+//     await db.sync({ force: true });
+
+//     // Create users and tasks
+//     // await Promise.all(users.map((user) => User.create(user)));
+//     // await Promise.all(books.map((task) => Product.create(task)));
+
+//     // Associate each task with a random user
+//     await Promise.all(
+//       orders.map((e) => {
+//         const user = Math.floor(Math.random() * 5) + 1;
+//         Order.create({ status: e.status, userId: user });
+//       })
+//     );
+//     // await Promise.all(orderItems.map((e) => OrderItem.create(e)));
+//     // await Promise.all(userAddress.map((e) => UserAddress.create(e)));
+//     // await Promise.all(categories.map((e) => Category.create({ name: e })));
+//   } catch (e) {
+//     console.error(e);
+//     db.close();
+//   }
+// };
+// seed();
+
+// const genItems = () => {
+//   let orderItems = [];
+//   for (let i = 0; i < 3; i++) {
+//     orders.map((e, idx) => {
+//       const index = idx + 1;
+//       const product = Math.floor(Math.random() * 100) + 1;
+//       const quanity = Math.floor(Math.random() * 20) + 1;
+//       const unique = orderItems.map((val) => {
+//         if (val.productId === product) {
+//           return false;
+//         } else {
+//           return true;
+//         }
+//       });
+//       if (unique) {
+//         orderItems.push({
+//           productId: product,
+//           orderId: index,
+//           quantity: quanity,
+//         });
+//       } else {
+//         return;
+//       }
+//     });
+// };
+
+// genItems();
+
+// const genOrders = () => {
+//   let order = [];
+//   const status = ["cart", "pending", "complete"];
+//   for (let i = 0; i < 30; i++) {
+//     const rand = Math.floor(Math.random() * 3) + 1;
+//     if (rand === 1) {
+//       order.push({ status: "cart" });
+//     } else if (rand === 2) {
+//       order.push({ status: "pending" });
+//     } else {
+//       order.push({ status: "complete" });
+//     }
+//   }
+//   console.log(order);
+// };
+// genOrders();

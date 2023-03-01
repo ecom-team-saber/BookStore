@@ -26,11 +26,9 @@ const User = db.define("user", {
     },
   },
   userType: {
-    type: Sequelize.ENUM("member", "seller", "admin"),
+    type: Sequelize.ENUM({ values: ["member", "seller", "admin"] }),
   },
 });
-
-
 
 /**
  * instanceMethods
@@ -85,7 +83,5 @@ const hashPassword = async (user) => {
 User.beforeCreate(hashPassword);
 User.beforeUpdate(hashPassword);
 User.beforeBulkCreate((users) => Promise.all(users.map(hashPassword)));
-
-
 
 module.exports = User;
