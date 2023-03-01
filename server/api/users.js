@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User } = require('../db');
+const { User } = require("../db");
 
 const requireToken = async (req, res, next) => {
   try {
@@ -16,7 +16,8 @@ const requireToken = async (req, res, next) => {
 // api/users/login
 router.post("/login", async (req, res, next) => {
   try {
-    res.send({ token: await User.authenticate(req.body) });
+    const token = await User.authenticate(req.body);
+    res.send({ token: token });
   } catch (err) {
     next(err);
   }
@@ -48,10 +49,10 @@ router.get("/auth", async (req, res, next) => {
 //GET /api/users/
 router.get("/", requireToken, async (req, res, next) => {
   try {
-      const users = await User.findAll({
-        attributes: ["id", "username"],
-      });
-      res.json(users);
+    const users = await User.findAll({
+      attributes: ["id", "username"],
+    });
+    res.json(users);
   } catch (err) {
     next(err);
   }
@@ -60,9 +61,8 @@ router.get("/", requireToken, async (req, res, next) => {
 //GET /api/users/:id
 router.get("/:id", requireToken, async (req, res, next) => {
   try {
-      const user = await User.findByPk(req.params.id);
-      res.json(user);
-
+    const user = await User.findByPk(req.params.id);
+    res.json(user);
   } catch (err) {
     next(err);
   }
