@@ -2,8 +2,17 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const cart = require("./api/cart");
+const products = require("./api/products");
+const orders = require("./api/orders");
+const users = require("./api/users");
 
 const app = express();
+
+app.use("/api/products", products);
+app.use("/api/users", users);
+app.use("/api/cart", cart);
+app.use("/api/orders", orders);
 
 app.use(morgan("tiny"));
 app.use(
