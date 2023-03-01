@@ -11,7 +11,7 @@ const UserAddress = db.define("userAddress", {
     allowNull: false,
   },
   postalCode: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: false,
   },
   country: {
@@ -19,7 +19,7 @@ const UserAddress = db.define("userAddress", {
     allowNull: false,
   },
   mobile: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: false,
   },
 });
