@@ -20,9 +20,8 @@ const UserAddress = db.define("userAddress", {
   },
   mobile: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
 });
-
-module.exports = User;
 
 module.exports = UserAddress;

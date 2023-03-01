@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { models: { User }} = require('../db');
+const { User } = require('../db');
 
 const requireToken = async (req, res, next) => {
   try {
@@ -36,7 +36,7 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
-// api/users/auth       self
+// api/users/auth    self
 router.get("/auth", async (req, res, next) => {
   if (req.user) {
     res.send(req.user);
@@ -48,12 +48,10 @@ router.get("/auth", async (req, res, next) => {
 //GET /api/users/
 router.get("/", requireToken, async (req, res, next) => {
   try {
-    if (token.userType === "admin") {
       const users = await User.findAll({
         attributes: ["id", "username"],
       });
       res.json(users);
-    }
   } catch (err) {
     next(err);
   }
@@ -62,10 +60,9 @@ router.get("/", requireToken, async (req, res, next) => {
 //GET /api/users/:id
 router.get("/:id", requireToken, async (req, res, next) => {
   try {
-    if (token.userType === "admin") {
       const user = await User.findByPk(req.params.id);
       res.json(user);
-    }
+
   } catch (err) {
     next(err);
   }
