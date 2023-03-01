@@ -1,3 +1,5 @@
+/** @format */
+
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -24,7 +26,7 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const port = process.env.PORT || 5000;
+const port = 1347;
 
 app.get("/", (req, res) => {
   res.send("Book Store Api");
