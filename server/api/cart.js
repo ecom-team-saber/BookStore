@@ -4,7 +4,7 @@ const express = require("express");
 const router = express.Router();
 module.exports = router;
 
-const { Order, OrderItem } = require("../db/models");
+const { Order, OrderItem } = require("../db/index");
 
 module.exports = router;
 
