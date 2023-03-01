@@ -1127,30 +1127,28 @@ const categories = [
   "philosophy",
 ];
 
-// const seed = async () => {
-//   try {
-//     await db.sync({ force: true });
+const seed = async () => {
+  try {
+    await db.sync({ force: true });
 
-//     // Create users and tasks
-//     // await Promise.all(users.map((user) => User.create(user)));
-//     // await Promise.all(books.map((task) => Product.create(task)));
+    await Promise.all(users.map((user) => User.create(user)));
+    await Promise.all(books.map((book) => Product.create(book)));
 
-//     // Associate each task with a random user
-//     await Promise.all(
-//       orders.map((e) => {
-//         const user = Math.floor(Math.random() * 5) + 1;
-//         Order.create({ status: e.status, userId: user });
-//       })
-//     );
-//     // await Promise.all(orderItems.map((e) => OrderItem.create(e)));
-//     // await Promise.all(userAddress.map((e) => UserAddress.create(e)));
-//     // await Promise.all(categories.map((e) => Category.create({ name: e })));
-//   } catch (e) {
-//     console.error(e);
-//     db.close();
-//   }
-// };
-// seed();
+    await Promise.all(
+      orders.map((e) => {
+        const user = Math.floor(Math.random() * 5) + 1;
+        Order.create({ status: e.status, userId: user });
+      })
+    );
+    await Promise.all(orderItems.map((e) => OrderItem.create(e)));
+    await Promise.all(userAddress.map((e) => UserAddress.create(e)));
+    await Promise.all(categories.map((e) => Category.create({ name: e })));
+  } catch (e) {
+    console.error(e);
+    db.close();
+  }
+};
+seed();
 
 // const genItems = () => {
 //   let orderItems = [];

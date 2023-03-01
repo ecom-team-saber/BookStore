@@ -5,9 +5,6 @@ const Product = db.define("Product", {
   title: {
     type: Sequelize.STRING,
     allowNull: false,
-    validate: {
-      isEmpty: false,
-    },
   },
   author: {
     type: Sequelize.STRING,
