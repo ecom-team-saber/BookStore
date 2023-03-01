@@ -16,12 +16,15 @@ router.get("/name", async (req, res, next) => {
     const name = req.query.name;
     const products = await Product.findAll({
       where: {
-        [Op.like]: `%${name}%`,
+        title: {
+          [Op.like]: `%${name}%`,
+        },
       },
     });
     if (!products) res.status(404).json({ message: "No products found" });
     res.send(products);
   } catch (e) {
+    console.log(e);
     next(e);
   }
 });
