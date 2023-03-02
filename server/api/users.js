@@ -1,11 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const cookieParser = require("cookie-parser");
 const { User } = require("../db");
 
 const ms = 43200000;
-
-router.use(cookieParser());
 
 const requireToken = async (req, res, next) => {
   try {

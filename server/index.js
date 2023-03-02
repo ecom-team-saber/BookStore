@@ -9,6 +9,8 @@ const products = require("./api/products");
 const orders = require("./api/orders");
 const users = require("./api/users");
 const app = express();
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 
 app.use(morgan("tiny"));
 app.use(
