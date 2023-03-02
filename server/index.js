@@ -10,11 +10,6 @@ const orders = require("./api/orders");
 const users = require("./api/users");
 const app = express();
 
-app.use("/api/products", products);
-app.use("/api/users", users);
-app.use("/api/cart", cart);
-app.use("/api/orders", orders);
-
 app.use(morgan("tiny"));
 app.use(
   cors({
@@ -24,6 +19,11 @@ app.use(
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use("/api/products", products);
+app.use("/api/users", users);
+app.use("/api/cart", cart);
+app.use("/api/orders", orders);
 
 const port = 1347;
 

@@ -1,10 +1,15 @@
 const express = require("express");
 const router = express.Router();
+const cookieParser = require("cookie-parser");
 const { User } = require("../db");
+
+const ms = 43200000;
+
+router.use(cookieParser());
 
 const requireToken = async (req, res, next) => {
   try {
-    const token = req.headers.authorization;
+    const token = req.cookies.token;
     const user = await User.findByToken(token);
     req.user = user;
     next();
@@ -17,7 +22,12 @@ const requireToken = async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
   try {
     const token = await User.authenticate(req.body);
-    res.send({ token: token });
+    const user = await User.findByToken(token);
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + ms),
+      httpOnly: true,
+    });
+    res.json(user);
   } catch (err) {
     next(err);
   }
@@ -27,7 +37,12 @@ router.post("/login", async (req, res, next) => {
 router.post("/signup", async (req, res, next) => {
   try {
     const user = await User.create(req.body);
-    res.send({ token: await user.generateToken() });
+    const token = await user.generateToken();
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + ms),
+      httpOnly: true,
+    });
+    res.send(user);
   } catch (err) {
     if (err.name === "SequelizeUniqueConstraintError") {
       res.status(401).send("User already exists");
@@ -57,7 +72,14 @@ router.get("/", requireToken, async (req, res, next) => {
     next(err);
   }
 });
-
+router.get("/profile", requireToken, async (req, res, next) => {
+  try {
+    const user = await User.findByToken(req.cookies.token);
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
+});
 //GET /api/users/:id
 router.get("/:id", requireToken, async (req, res, next) => {
   try {
