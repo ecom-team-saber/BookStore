@@ -2,19 +2,25 @@
 
 const express = require("express");
 const router = express.Router();
+
 module.exports = router;
 
-const { Order, OrderItem } = require("../db/index");
+const { Order, OrderItem, User, Product } = require("../db/index");
 
 module.exports = router;
 
 // route gets cart associated with userID (status pending)
-router.get("/:userId", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
+    const user = await User.findByToken(req.cookies.token);
     const cart = await Order.findOne({
       where: {
-        userId: req.params.userId,
-        status_enum: "pending",
+        userId: user.id,
+        status: "cart",
+      },
+      include: {
+        model: OrderItem,
+        include: { model: Product },
       },
       // eager load OrderItems
     });
@@ -90,3 +96,21 @@ router.delete("/:userId/all", async (req, res, next) => {
     next(err);
   }
 });
+
+// const cookieParser = require("cookie-parser");
+// const { Order, OrderItem, User, Product } = require("../db/index");
+
+// router.use(cookieParser());
+// router.get("/", async (req, res) => {
+//   const token = req.cookies.token;
+//   const user = await User.findByToken(token);
+//   console.log(user);
+//   const orders = await Order.findAll({
+//     where: { userId: user.id, status: "cart" },
+//   });
+//   const items = await OrderItem.findAll({
+//     where: { orderId: orders[0].id },
+//     include: [{ model: Product }],
+//   });
+//   res.json(items);
+// });
