@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User } = require("../db");
+const { User, UserAddress } = require("../db");
 
 const ms = 43200000;
 
@@ -49,14 +49,6 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
-// api/users/auth    self
-router.get("/auth", async (req, res, next) => {
-  if (req.user) {
-    res.send(req.user);
-  } else {
-    res.sendStatus(404);
-  }
-});
 
 //GET /api/users/
 router.get("/", requireToken, async (req, res, next) => {
@@ -69,14 +61,19 @@ router.get("/", requireToken, async (req, res, next) => {
     next(err);
   }
 });
+
+//GET /api/users/profile/
 router.get("/profile", requireToken, async (req, res, next) => {
   try {
     const user = await User.findByToken(req.cookies.token);
-    res.json(user);
+    const userAddress = await UserAddress.findByPk(user.id);
+
+    res.json([user, userAddress]);
   } catch (err) {
     next(err);
   }
 });
+
 //GET /api/users/:id
 router.get("/:id", requireToken, async (req, res, next) => {
   try {
