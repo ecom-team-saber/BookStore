@@ -1,5 +1,4 @@
 import "./index.css";
-import { MDBIcon } from "mdb-react-ui-kit";
 import Navbar from "./pages/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
