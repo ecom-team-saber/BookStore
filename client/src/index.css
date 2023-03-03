@@ -6,6 +6,10 @@ body {
   height: 400px;
 }
 
+#intro-example {
+  height: 400px;
+}
+
 @media (min-width: 992px) {
   #intro-example {
     height: 600px;
@@ -47,3 +51,4 @@ body {
 nav li {
   list-style-type: none
 }
+
