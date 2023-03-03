@@ -145,3 +145,40 @@ nav li {
   margin-left: 5%;
   margin-top: 15px;
 }
+.search-hover {
+  border: 1px solid #ccc;
+  outline: none;
+  background-size: 22px;
+  background-position: 13px;
+  border-radius: 15px;
+  width: 30px;
+  height: 30px;
+  padding: 15px;
+  transition: all 0.5s;
+  margin-right: 10px;
+}
+.search-hover:hover {
+  width: 300px;
+  margin-left: -150px;
+}
+.search-hover:focus {
+  width: 300px;
+  margin-left: -150px;
+}
+@media (max-width: 992px) {
+  .search-hover {
+    display: none;
+  }
+}
+@media (min-width: 991px) {
+  .mobile-search {
+    display: none;
+  }
+}
+.mobile-search {
+  border: 1px solid #ccc;
+  outline: none;
+  border-radius: 10px;
+  padding-left: 10px;
+  margin-left: -2px;
+}

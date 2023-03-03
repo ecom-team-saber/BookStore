@@ -14,7 +14,7 @@ import {
   MDBDropdownItem,
   MDBCollapse,
 } from "mdb-react-ui-kit";
-
+import { Twirl as Hamburger } from "hamburger-react";
 export default function Navbar() {
   const [showBasic, setShowBasic] = useState(false);
 
@@ -31,9 +31,8 @@ export default function Navbar() {
           aria-label="Toggle navigation"
           onClick={() => setShowBasic(!showBasic)}
         >
-          <MDBIcon icon="bars" fas />
+          <Hamburger size={20} />
         </MDBNavbarToggler>
-
         <MDBCollapse navbar show={showBasic}>
           <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
             <MDBNavbarItem>
@@ -44,13 +43,27 @@ export default function Navbar() {
             <MDBNavbarItem>
               <MDBNavbarLink href="products">Products</MDBNavbarLink>
             </MDBNavbarItem>
+            <MDBNavbarItem>
+              <input
+                className="mobile-search"
+                type="text"
+                placeholder="search here..."
+              />
+            </MDBNavbarItem>
           </MDBNavbarNav>
-
+          <MDBContainer>
+            <input
+              type="text"
+              className="search-hover"
+              placeholder="search here..."
+            />
+          </MDBContainer>
           <MDBNavbarItem>
             <MDBDropdown>
               <MDBDropdownToggle tag="a" className="" role="button">
                 <MDBIcon icon="user-alt" fas size="xl" />
               </MDBDropdownToggle>
+
               <MDBDropdownMenu>
                 <MDBDropdownItem>
                   <a className="nav-link" href="/profile">
