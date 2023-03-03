@@ -38,3 +38,7 @@ body {
   padding-bottom: 50%;
   position: relative;
 }
+
+nav ul {
+  list-style-type: none;
+}
