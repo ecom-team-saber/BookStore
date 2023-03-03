@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   MDBCol,
   MDBContainer,
@@ -16,21 +17,21 @@ import {
 } from "mdb-react-ui-kit";
 
 const user = {
-    username: "jawty0",
-    password: "3EzCMPJGog",
-    name: "Jeanna Awty",
-    email: "jawty0@sina.com.cn",
-    userType: "member",
-  };
+  username: "jawty0",
+  password: "3EzCMPJGog",
+  name: "Jeanna Awty",
+  email: "jawty0@sina.com.cn",
+  userType: "member",
+};
 
 const userAddress = {
-    addressLine1: "35433 Oak Valley Hill",
-    city: "Chicago",
-    postalCode: "60674",
-    country: "United States",
-    mobile: "312-169-2841",
-    userId: 2,
-  };
+  addressLine1: "35433 Oak Valley Hill",
+  city: "Chicago",
+  postalCode: "60674",
+  country: "United States",
+  mobile: "312-169-2841",
+  userId: 2,
+};
 
 const books = [
   {
@@ -108,14 +109,20 @@ const books2 = [
     price: 29.51,
     inventory: 22,
   },
-
 ];
 
-const orders = [books, books2]
-
+const orders = [books, books2];
 
 export default function ProfilePage() {
+  const navigate = useNavigate();
+  const [loggedIn, setLoggedIn] = useState(false);
 
+  useEffect(() => {
+    //Check token for log in
+    if (!loggedIn) {
+      navigate("/login");
+    }
+  }, []);
   return (
     <section style={{ backgroundColor: "#eee" }}>
       <MDBContainer className="py-5">
@@ -236,7 +243,9 @@ export default function ProfilePage() {
                     <MDBCardText>City</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">{userAddress.city}</MDBCardText>
+                    <MDBCardText className="text-muted">
+                      {userAddress.city}
+                    </MDBCardText>
                   </MDBCol>
                 </MDBRow>
               </MDBCardBody>
@@ -244,33 +253,35 @@ export default function ProfilePage() {
 
             <MDBRow>
               {orders.map((order) => {
-                return (<MDBCol md="6">
-                  <MDBCard className="mb-4 mb-md-0">
-                    <MDBCardBody>
-                      <MDBCardText className="mb-4">
-                        Order from 3-2-2023
-                      </MDBCardText>
-                      {order.map((book) => {
-                        return (
-                          <>
-                            <MDBCardText
-                              className="mb-1"
-                              style={{ fontSize: ".90rem" }}
-                            >
-                              {book.title}{" "}
-                            </MDBCardText>
-                            <MDBCardText
-                              className="mb-1 text-muted"
-                              style={{ fontSize: ".77rem" }}
-                            >
-                              by: {book.author}
-                            </MDBCardText>
-                          </>
-                        );
-                      })}
-                    </MDBCardBody>
-                  </MDBCard>
-                </MDBCol>);
+                return (
+                  <MDBCol md="6">
+                    <MDBCard className="mb-4 mb-md-0">
+                      <MDBCardBody>
+                        <MDBCardText className="mb-4">
+                          Order from 3-2-2023
+                        </MDBCardText>
+                        {order.map((book) => {
+                          return (
+                            <>
+                              <MDBCardText
+                                className="mb-1"
+                                style={{ fontSize: ".90rem" }}
+                              >
+                                {book.title}{" "}
+                              </MDBCardText>
+                              <MDBCardText
+                                className="mb-1 text-muted"
+                                style={{ fontSize: ".77rem" }}
+                              >
+                                by: {book.author}
+                              </MDBCardText>
+                            </>
+                          );
+                        })}
+                      </MDBCardBody>
+                    </MDBCard>
+                  </MDBCol>
+                );
               })}
             </MDBRow>
           </MDBCol>

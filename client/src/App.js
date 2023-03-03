@@ -8,18 +8,21 @@ import Footer from "./pages/Footer";
 import Admin from "./pages/Admin";
 import Shop from "./pages/Shop";
 import Profile from "./pages/Profile";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
       <Navbar />
-      <Home />
-      <Login />
-      <Cart />
-      <ProductView />
-      <Profile />
-      <Shop />
-      <Admin />
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/cart" element={<Cart />} />
+        <Route exact path="/product" element={<ProductView />} />
+        <Route exact path="/products" element={<Shop />} />
+        <Route exact path="/admin" element={<Admin />} />
+        <Route exact path="/profile" element={<Profile />} />
+      </Routes>
       <Footer />
     </div>
   );

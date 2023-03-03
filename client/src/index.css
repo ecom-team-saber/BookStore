@@ -169,6 +169,10 @@ nav li {
   .search-hover {
     display: none;
   }
+  .dropdown-nav {
+    margin: 0 0 10px -15px;
+    font-size: 14px;
+  }
 }
 @media (min-width: 991px) {
   .mobile-search {
@@ -181,4 +185,12 @@ nav li {
   border-radius: 10px;
   padding-left: 10px;
   margin-left: -2px;
+}
+.dropdown-nav {
+  font-size: 16px;
+  margin-top: 3px;
+}
+.dropdown-nav:hover,
+.dropdown-nav:focus {
+  background-color: white;
 }
