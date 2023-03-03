@@ -28,6 +28,19 @@ router.get("/name", async (req, res, next) => {
     next(e);
   }
 });
+
+router.get("/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const product = await Product.findByPk(id);
+    if (!product) res.status(404).json({ message: "Product not found" });
+    res.json(product);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
 router.put("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
