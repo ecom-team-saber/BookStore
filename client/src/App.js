@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import ProductView from "./pages/ProductView";
+import Footer from "./pages/Footer";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Home />
         <Cart />
       <ProductView />
+      <Footer />
       </div>
   );
 }

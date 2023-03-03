@@ -1,17 +1,14 @@
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
 }
-
 #intro-example {
   height: 400px;
 }
-
 @media (min-width: 992px) {
   #intro-example {
     height: 600px;
   }
 }
-
 .home-cards {
   border: none;
   margin-top: 15px;
@@ -20,7 +17,6 @@ body {
   flex-direction: row;
   flex-wrap: wrap;
 }
-
 .home-card {
   margin: 1rem;
   display: flex;
@@ -32,7 +28,6 @@ body {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
-
 .grid-square {
   font-size: 20px;
   font-weight: 700;
