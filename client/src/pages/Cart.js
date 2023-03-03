@@ -72,17 +72,6 @@ const FakeProduct = () => {
 };
 
 export default function Cart() {
-  const cart = [{ title: "book1" }, { title: "book2" }];
-  const book = [
-    {
-      image: "https://i.imgur.com/2DsA49b.webp",
-      author: "Thinking, Fast and Slow",
-      title: "Daniel Kahneman",
-      format: "Digital",
-      price: 9.99,
-    },
-  ];
-
   return (
     <section className="h-100 h-custom">
       <MDBContainer className="py-5 h-100">
