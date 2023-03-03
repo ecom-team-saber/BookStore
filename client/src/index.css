@@ -1,3 +1,5 @@
+/** @format */
+
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
 }
@@ -41,4 +43,8 @@ body {
 
 nav li {
   list-style-type: none;
+}
+
+.custom-wrapper {
+  margin-bottom: -10px;
 }

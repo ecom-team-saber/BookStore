@@ -1,3 +1,5 @@
+/** @format */
+
 import "./index.css";
 import Navbar from "./pages/Navbar";
 import Home from "./pages/Home";
@@ -12,15 +14,15 @@ import Profile from "./pages/Profile";
 function App() {
   return (
     <div className="App">
-      <Navbar />
+      {/* <Navbar />
       <Home />
       <Login />
       <Cart />
       <ProductView />
       <Profile />
-      <Shop />
+      <Shop /> */}
       <Admin />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
