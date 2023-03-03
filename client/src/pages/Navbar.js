@@ -33,7 +33,6 @@ export default function Navbar() {
         >
           <MDBIcon icon="bars" fas />
         </MDBNavbarToggler>
-
         <MDBCollapse navbar show={showBasic}>
           <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
             <MDBNavbarItem>
@@ -44,13 +43,27 @@ export default function Navbar() {
             <MDBNavbarItem>
               <MDBNavbarLink href="products">Products</MDBNavbarLink>
             </MDBNavbarItem>
+            <MDBNavbarItem>
+              <input
+                className="mobile-search"
+                type="text"
+                placeholder="search here..."
+              />
+            </MDBNavbarItem>
           </MDBNavbarNav>
-
+          <MDBContainer>
+            <input
+              type="text"
+              className="search-hover"
+              placeholder="search here..."
+            />
+          </MDBContainer>
           <MDBNavbarItem>
             <MDBDropdown>
               <MDBDropdownToggle tag="a" className="" role="button">
                 <MDBIcon icon="user-alt" fas size="xl" />
               </MDBDropdownToggle>
+
               <MDBDropdownMenu>
                 <MDBDropdownItem>
                   <a className="nav-link" href="/profile">
