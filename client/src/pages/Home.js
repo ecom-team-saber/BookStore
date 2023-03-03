@@ -1,6 +1,4 @@
 import gradient from "../assets/gradient.png";
-import gradient2 from "../assets/gradient2.png";
-import gradient3 from "../assets/gradient3.png";
 
 import React from "react";
 import {
@@ -102,25 +100,25 @@ export default function Home() {
           Browse Our Categories
         </h1>
         <div className="categories-display">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
-                <div class="grid-square">Non-Fiction</div>
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
+                <div className="grid-square">Non-Fiction</div>
               </div>
-              <div class="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
-                <div class="grid-square">Fiction</div>
+              <div className="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
+                <div className="grid-square">Fiction</div>
               </div>
-              <div class="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
-                <div class="grid-square">History</div>
+              <div className="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
+                <div className="grid-square">History</div>
               </div>
-              <div class="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
-                <div class="grid-square">Sci-Fi</div>
+              <div className="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
+                <div className="grid-square">Sci-Fi</div>
               </div>
-              <div class="col-sm-12 col-md-6 col-lg-6 text-center mb-4">
-                <div class="grid-square">Horror</div>
+              <div className="col-sm-12 col-md-6 col-lg- text-center mb-4">
+                <div className="grid-square">Horror</div>
               </div>
-              <div class="col-sm-12 col-md-6 col-lg-6 text-center mb-4">
-                <div class="grid-square">Philosophy</div>
+              <div className="col-sm-12 col-md-6 col-lg-6 text-center mb-4">
+                <div className="grid-square">Philosophy</div>
               </div>
             </div>
           </div>
