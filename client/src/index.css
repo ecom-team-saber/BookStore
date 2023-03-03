@@ -44,3 +44,6 @@ body {
   position: relative;
 }
 
+nav ul {
+  list-style-type: none;
+}
