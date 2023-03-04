@@ -85,8 +85,9 @@ export default function Shop() {
                 <div className="product-img">
                   <img src={thing} alt=".." />
                   <div className="overlay">
-                    Add to Cart<br></br>
-                    <MDBIcon fas icon="shopping-cart" />
+                    <button className="quick-cart">
+                      <MDBIcon fas icon="shopping-cart" size="sm" />
+                    </button>
                   </div>
                 </div>
                 <div className="product-info">
