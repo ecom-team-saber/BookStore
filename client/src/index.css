@@ -4,12 +4,16 @@ body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 #intro-example {
-  height: 400px;
+  height: 300px;
+  position: relative;
 }
 @media (min-width: 992px) {
   #intro-example {
-    height: 600px;
+    height: 500px;
   }
+}
+#intro-example:hover {
+  cursor: pointer;
 }
 .home-cards {
   border: none;
@@ -101,26 +105,37 @@ nav li {
 }
 
 .product-img img {
+  position: relative;
   display: block;
   width: 100%;
   height: auto;
   transition: transform 0.3s ease-in-out;
+  overflow: hidden;
 }
 
 .product-img .overlay {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  height: 50px;
   color: #fff;
   font-size: 18px;
-  text-align: center;
-  justify-content: baseline;
-  padding-top: 50%;
+
   opacity: 0;
-  transition: opacity 0.3s ease-in-out;
+  transform: translateY(100%);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+.quick-cart {
+  margin-left: 15px;
+  border: none;
+  box-shadow: none;
+  height: 35px;
+  width: 35px;
+  padding-bottom: 5px;
+}
+.quick-cart:hover .fa-shopping-cart {
+  color: rgb(215, 64, 64);
 }
 
 .product-img:hover img {
@@ -128,6 +143,8 @@ nav li {
 }
 .product-img:hover .overlay {
   opacity: 1;
+  transform: translateY(0);
+  cursor: pointer;
 }
 .filters {
   border: 1px solid #f1f1f1;
@@ -193,4 +210,11 @@ nav li {
 .dropdown-nav:hover,
 .dropdown-nav:focus {
   background-color: white;
+}
+#categories-label {
+  font-family: "Poppins", sans-serif;
+  letter-spacing: -2px;
+  font-weight: 800;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }

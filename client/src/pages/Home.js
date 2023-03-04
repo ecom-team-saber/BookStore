@@ -1,4 +1,6 @@
 import gradient from "../assets/gradient.png";
+import fiction from "../assets/fiction.jpeg";
+import philosophy from "../assets/philosophy.jpeg";
 
 import React from "react";
 import {
@@ -8,6 +10,7 @@ import {
   MDBCardImage,
   MDBCardTitle,
 } from "mdb-react-ui-kit";
+import { useNavigate } from "react-router-dom";
 
 const FakeCard = () => {
   return (
@@ -33,6 +36,7 @@ const FakeCard = () => {
 };
 
 export default function Home() {
+  const navigate = useNavigate();
   return (
     <>
       <header
@@ -41,72 +45,52 @@ export default function Home() {
         }}
       >
         <div
+          onClick={() => {
+            navigate("/products");
+          }}
           id="intro-example"
-          className="p-5 text-center bg-image"
+          className="p-5 text-center bg-image img-fluid"
           style={{
             backgroundImage: `url(${gradient})`,
           }}
-        >
-          <div
-            className="mask"
-            style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
-          >
-            <div className="d-flex justify-content-center align-items-center h-100">
-              <div className="text-white">
-                <h1 className="display-3">Welcome Page</h1>
-                <MDBBtn
-                  className="m-2"
-                  tag="a"
-                  outline
-                  size="lg"
-                  rel="nofollow"
-                  target="_blank"
-                  href="https://www.youtube.com/watch?v=c9B4TPnak1A"
-                >
-                  Go Here
-                </MDBBtn>
-                <MDBBtn
-                  className="m-2"
-                  tag="a"
-                  outline
-                  size="lg"
-                  target="_blank"
-                  href="https://mdbootstrap.com/docs/standard/"
-                >
-                  Go there
-                </MDBBtn>
-              </div>
-            </div>
-          </div>
-        </div>
+        ></div>
       </header>
-      <h6
-        style={{
-          fontSize: 24,
-          margin: 10,
-          marginBottom: -10,
-          textDecoration: "underline",
-        }}
-      >
-        Featured Products:
-      </h6>
+      <h1 id="categories-label" className="text-center" style={{ margin: 20 }}>
+        Featured Products
+      </h1>
       <div className="home-cards">
         {[1, 2, 3, 4].map((e) => (
           <FakeCard />
         ))}
       </div>
       <div>
-        <h1 style={{ margin: 20 }} className="text-center">
-          Browse Our Categories
-        </h1>
         <div className="categories-display">
           <div className="container">
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-12">
+                <h1
+                  id="categories-label"
+                  style={{ margin: 20 }}
+                  className="text-center"
+                >
+                  Browse Our Categories
+                </h1>
+              </div>
+            </div>
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
                 <div className="grid-square">Non-Fiction</div>
               </div>
               <div className="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
-                <div className="grid-square">Fiction</div>
+                <div
+                  style={{
+                    backgroundImage: `url(${fiction})`,
+                    backgroundSize: "cover",
+                  }}
+                  className="grid-square"
+                >
+                  Fiction
+                </div>
               </div>
               <div className="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
                 <div className="grid-square">History</div>
@@ -118,7 +102,15 @@ export default function Home() {
                 <div className="grid-square">Horror</div>
               </div>
               <div className="col-sm-12 col-md-6 col-lg-6 text-center mb-4">
-                <div className="grid-square">Philosophy</div>
+                <div
+                  className="grid-square"
+                  style={{
+                    backgroundImage: `url(${philosophy})`,
+                    backgroundSize: "cover",
+                  }}
+                >
+                  Philosophy
+                </div>
               </div>
             </div>
           </div>
