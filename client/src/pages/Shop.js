@@ -32,35 +32,15 @@ const Filter = () => {
       <MDBCollapse show={showNavExternal}>
         <div className="bg-light shadow-3 p-4">
           {categories.map((e, idx) => {
-            if ((idx + 1) % 2 === 0) {
-              return (
-                <>
-                  <div className="form-check form-check-inline">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      id="inlineCheckbox1"
-                      value="option1"
-                    />
-                    <label className="form-check-label" for="inlineCheckbox1">
-                      {e}
-                    </label>
-                  </div>
-                  <br></br>
-                </>
-              );
-            }
             return (
-              <div className="form-check form-check-inline">
+              <div key={idx} className="form-check form-check-inline">
                 <input
                   className="form-check-input"
                   type="checkbox"
                   id="inlineCheckbox1"
                   value="option1"
                 />
-                <label className="form-check-label" for="inlineCheckbox1">
-                  {e}
-                </label>
+                <label className="form-check-label">{e}</label>
               </div>
             );
           })}
@@ -79,9 +59,9 @@ export default function Shop() {
       <section className="products">
         <Filter />
         <div id="shop">
-          {arr.map((e) => {
+          {arr.map((e, idx) => {
             return (
-              <div id="product-card" className="">
+              <div key={idx} id="product-card" className="">
                 <div className="product-img">
                   <img src={thing} alt=".." />
                   <div className="overlay">

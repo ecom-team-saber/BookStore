@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User, UserAddress } = require("../db");
+const { User, UserAddress, Order } = require("../db");
 
 const ms = 43200000;
 
@@ -35,6 +35,7 @@ router.post("/signup", async (req, res, next) => {
   try {
     const user = await User.create(req.body);
     const token = await user.generateToken();
+    await Order.create({ userId: user.id, status: "cart" });
     res.cookie("token", token, {
       expires: new Date(Date.now() + ms),
       httpOnly: true,
@@ -48,7 +49,6 @@ router.post("/signup", async (req, res, next) => {
     }
   }
 });
-
 
 //GET /api/users/
 router.get("/", requireToken, async (req, res, next) => {
@@ -68,7 +68,7 @@ router.get("/profile", requireToken, async (req, res, next) => {
     const user = await User.findByToken(req.cookies.token);
     const userAddress = await UserAddress.findByPk(user.id);
 
-    res.json([user, userAddress]);
+    res.json(user);
   } catch (err) {
     next(err);
   }
