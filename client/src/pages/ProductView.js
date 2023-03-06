@@ -1,5 +1,7 @@
 import React, { useState, useEffect }  from "react";
-import axios from "axios"
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import {
   MDBContainer,
   MDBRow,
@@ -12,23 +14,25 @@ import {
   MDBRipple,
 } from "mdb-react-ui-kit";
 
+import { fetchSingleProduct } from "../store/slices/productsSlice";
+
 function App() {
-  const [product, setProduct] = useState({
-    title: '',
-    author: '',
-    price: '',
-    description: '',
-  });
-  const productId = 1;
+  const dispatch = useDispatch();
+  const singleProduct = useSelector((state) => state.products.singleProduct);
+  const { productId } = useParams();
 
   useEffect(() => {
-    axios.get(`http://localhost:1347/api/products/${productId}`).then((response) => {
-      setProduct(response.data);
-      console.log(response.data)
-    });
-  }, [productId]);
+    dispatch(fetchSingleProduct(productId));
+  }, [dispatch, productId]);
   
-  console.log(product)
+  const addToCart = (e) => {
+    axios.post("http://localhost:1347/api/cart", {
+      productId: e.id,
+      quantity: 1,
+    });
+  };
+
+  console.log(singleProduct)
   return (
     <MDBContainer fluid className="my-5">
       <MDBRow className="justify-content-center">
@@ -57,10 +61,10 @@ function App() {
                 <div>
                   <p>
                     <a href="#!" className="text-dark">
-                      {product.title}
+                      {singleProduct.title}
                     </a>
                   </p>
-                  <p className="small text-muted">{product.author}</p>
+                  <p className="small text-muted">{singleProduct.author}</p>
                 </div>
                 <div>
                   <div className="d-flex flex-row justify-content-end mt-1 mb-4 text-danger">
@@ -78,7 +82,7 @@ function App() {
               <div className="d-flex justify-content-between">
                 <p>
                   <a href="#!" className="text-dark">
-                    ${product.price}
+                    ${singleProduct.price}
                   </a>
                 </p>
                 <p className="text-dark">#### 8787</p>
@@ -94,7 +98,7 @@ function App() {
                   </a>
                 </p>
               </div>
-              <p className="small text-muted">{product.description}</p>
+              <p className="small text-muted">{singleProduct.description}</p>
             </MDBCardBody>
             <hr class="my-0" />
             <MDBCardBody className="pb-0">
@@ -102,7 +106,7 @@ function App() {
                 <a href="#!" className="text-dark fw-bold">
                   Cancel
                 </a>
-                <MDBBtn color="primary">Buy now</MDBBtn>
+                <MDBBtn color="primary" onClick={() => addToCart(singleProduct)}>Buy now</MDBBtn>
               </div>
             </MDBCardBody>
           </MDBCard>
