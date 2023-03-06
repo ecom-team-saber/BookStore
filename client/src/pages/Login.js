@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   MDBContainer,
   MDBTabs,
@@ -9,9 +10,16 @@ import {
   MDBBtn,
   MDBInput,
 } from "mdb-react-ui-kit";
+import { logIn, signUp } from "../store/slices/userSlice";
 
 export default function Login() {
   const [justifyActive, setJustifyActive] = useState("tab1");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+
+  const dispatch = useDispatch();
 
   const handleJustifyClick = (value) => {
     if (value === justifyActive) {
@@ -20,6 +28,22 @@ export default function Login() {
 
     setJustifyActive(value);
   };
+
+  const handleLogin = async (evt) => {
+    evt.preventDefault();
+    dispatch(logIn({ username, password }));
+    setUsername('');
+    setPassword('');
+  }
+
+  const handleSignUp = async (evt) => {
+    evt.preventDefault();
+    dispatch(signUp({ username, password, name, email }));
+    setUsername('');
+    setPassword('');
+    setName('');
+    setEmail('');
+  }
 
   return (
     <MDBContainer className="p-3 my-5 d-flex flex-column w-50">
@@ -48,39 +72,63 @@ export default function Login() {
 
       <MDBTabsContent>
         <MDBTabsPane show={justifyActive === "tab1"}>
-          <MDBInput
-            wrapperClass="mb-4"
-            label="Email address"
-            id="form1"
-            type="email"
-          />
-          <MDBInput
-            wrapperClass="mb-4"
-            label="Password"
-            id="form2"
-            type="password"
-          />
+          <form id="login" onSubmit={handleLogin}>
+            <MDBInput
+              wrapperClass="mb-4"
+              label="Username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <MDBInput
+              wrapperClass="mb-4"
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-          <MDBBtn className="mb-4 w-100">Sign in</MDBBtn>
+            <MDBBtn className="mb-4 w-100" type="submit" id="login">
+              Sign in
+            </MDBBtn>
+          </form>
         </MDBTabsPane>
 
         <MDBTabsPane show={justifyActive === "tab2"}>
-          <MDBInput wrapperClass="mb-4" label="Name" id="form1" type="text" />
-          <MDBInput
-            wrapperClass="mb-4"
-            label="Username"
-            id="form1"
-            type="text"
-          />
-          <MDBInput wrapperClass="mb-4" label="Email" id="form1" type="email" />
-          <MDBInput
-            wrapperClass="mb-4"
-            label="Password"
-            id="form1"
-            type="password"
-          />
+          <form id="signup" onSubmit={handleSignUp}>
+            <MDBInput
+              wrapperClass="mb-4"
+              label="Name"
+              value={name}
+              type="text"
+              onChange={(e) => setName(e.target.value)}
+            />
+            <MDBInput
+              wrapperClass="mb-4"
+              label="Username"
+              value={username}
+              type="text"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <MDBInput
+              wrapperClass="mb-4"
+              label="Email"
+              value={email}
+              type="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <MDBInput
+              wrapperClass="mb-4"
+              label="Password"
+              value={password}
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-          <MDBBtn className="mb-4 w-100">Sign up</MDBBtn>
+            <MDBBtn className="mb-4 w-100" type="submit" id="signup">
+              Sign up
+            </MDBBtn>
+          </form>
         </MDBTabsPane>
       </MDBTabsContent>
     </MDBContainer>
