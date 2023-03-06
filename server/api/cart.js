@@ -77,6 +77,22 @@ router.delete("/", async (req, res, next) => {
     next(err);
   }
 });
+router.put("/submit", async (req, res, next) => {
+  try {
+    const user = await User.findByToken(req.cookies.token);
+    const cart = await Order.findOne({
+      where: {
+        userId: user.id,
+        status: "cart",
+      },
+    });
+    await cart.update({ status: "pending" });
+    const newCart = await Order.create({ userId: user.id, status: "cart" });
+    res.json(newCart);
+  } catch (e) {
+    next(e);
+  }
+});
 
 // logic to remove all items objects
 router.delete("/:userId/all", async (req, res, next) => {

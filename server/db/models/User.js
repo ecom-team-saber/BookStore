@@ -3,7 +3,7 @@ const db = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
-
+const UserAddress = require("./UserAddress");
 dotenv.config();
 const SALT_ROUNDS = 5;
 
@@ -62,12 +62,22 @@ User.authenticate = async function ({ username, password }) {
 User.findByToken = async function (token) {
   try {
     const { id } = jwt.verify(token, process.env.JWT);
-    const user = User.findByPk(id);
+    const user = await User.findOne({
+      where: {
+        id: id,
+      },
+      include: [
+        {
+          model: UserAddress,
+        },
+      ],
+    });
     if (!user) {
       throw "nooo";
     }
     return user;
   } catch (ex) {
+    console.log(ex);
     const error = Error("bad token");
     error.status = 401;
     throw error;

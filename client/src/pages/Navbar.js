@@ -15,6 +15,7 @@ import {
   MDBCollapse,
 } from "mdb-react-ui-kit";
 import { Twirl as Hamburger } from "hamburger-react";
+import Cart from "./Cart";
 export default function Navbar() {
   const [showBasic, setShowBasic] = useState(false);
   const productPages = [
@@ -72,9 +73,9 @@ export default function Navbar() {
                     Products
                   </MDBDropdownToggle>
                   <MDBDropdownMenu>
-                    {productPages.map((e) => {
+                    {productPages.map((e, idx) => {
                       return (
-                        <MDBDropdownItem link href="/products">
+                        <MDBDropdownItem key={idx} link href="/products">
                           {e}
                         </MDBDropdownItem>
                       );

@@ -1,12 +1,52 @@
 const express = require("express");
 const router = express.Router();
 const { Op } = require("sequelize");
-const { Product } = require("../db/index.js");
+const { Product, Category } = require("../db/index.js");
 
 router.get("/", async (req, res, next) => {
   try {
+    const category = req.query.category;
+    if (category) {
+      const products = await Product.findAll({
+        include: {
+          model: Category,
+          where: {
+            name: category,
+          },
+        },
+      });
+      res.json(products);
+    } else {
+      const products = await Product.findAll({
+        include: {
+          model: Category,
+        },
+      });
+      res.json(products);
+    }
+  } catch (e) {
+    next(e);
+  }
+});
+router.get("/featured", async (req, res, next) => {
+  try {
     const products = await Product.findAll();
-    res.send(products);
+    let arr = [];
+    let nums = [];
+    while (nums.length < 4) {
+      const newNum = Math.floor(Math.random() * products.length) + 1;
+      if (!nums.includes(newNum)) {
+        nums.push(newNum);
+      }
+    }
+    await Promise.all(
+      nums.map(async (e) => {
+        const product = await Product.findByPk(e);
+        arr.push(product);
+      })
+    );
+
+    res.send(arr);
   } catch (e) {
     next(e);
   }

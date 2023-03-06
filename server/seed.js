@@ -1143,6 +1143,18 @@ const seed = async () => {
     await Promise.all(orderItems.map((e) => OrderItem.create(e)));
     await Promise.all(userAddress.map((e) => UserAddress.create(e)));
     await Promise.all(categories.map((e) => Category.create({ name: e })));
+    await Promise.all(
+      books.map((e) => {
+        const cat = Math.floor(Math.random() * 7) + 1;
+        const func = async () => {
+          const product = await Product.findOne({
+            where: { title: e.title, author: e.author },
+          });
+          await product.addCategory(cat);
+        };
+        func();
+      })
+    );
   } catch (e) {
     console.error(e);
     db.close();
