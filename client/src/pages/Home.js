@@ -107,9 +107,12 @@ export default function Home() {
             </div>
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
+                <Link to={`/products?category=non-fiction`}>
                 <div className="grid-square">Non-Fiction</div>
+                </Link>
               </div>
               <div className="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
+                <Link to={`/products?category=fiction`}>
                 <div
                   style={{
                     backgroundImage: `url(${fiction})`,
@@ -119,17 +122,25 @@ export default function Home() {
                 >
                   Fiction
                 </div>
+                </Link>
               </div>
               <div className="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
+                <Link to={`/products?category=history`}>
                 <div className="grid-square">History</div>
+                </Link>
               </div>
               <div className="col-sm-12 col-md-6 col-lg-3 text-center mb-4">
+                <Link to={`/products?category=sci-fi`}>
                 <div className="grid-square">Sci-Fi</div>
+                </Link>
               </div>
               <div className="col-sm-12 col-md-6 col-lg- text-center mb-4">
+                <Link to={`/products?category=horror`}>
                 <div className="grid-square">Horror</div>
+                </Link>
               </div>
               <div className="col-sm-12 col-md-6 col-lg-6 text-center mb-4">
+                <Link to={`/products?category=philosophy`}>
                 <div
                   className="grid-square"
                   style={{
@@ -139,6 +150,7 @@ export default function Home() {
                 >
                   Philosophy
                 </div>
+                </Link>
               </div>
             </div>
           </div>
