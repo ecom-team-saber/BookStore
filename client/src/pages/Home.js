@@ -2,7 +2,7 @@ import gradient from "../assets/gradient.png";
 import fiction from "../assets/fiction.jpeg";
 import philosophy from "../assets/philosophy.jpeg";
 
-import React from "react";
+import React, { useEffect } from 'react';
 import {
   MDBBtn,
   MDBCard,
@@ -11,6 +11,8 @@ import {
   MDBCardTitle,
 } from "mdb-react-ui-kit";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { featuredProducts } from "../store/slices/productsSlice";
 
 const FakeCard = () => {
   return (
@@ -36,7 +38,14 @@ const FakeCard = () => {
 };
 
 export default function Home() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const featured = useSelector((state) => state.products.featured);
+
+  useEffect(() => {
+    dispatch(featuredProducts());
+  }, [dispatch]);
+
   return (
     <>
       <header
@@ -59,8 +68,25 @@ export default function Home() {
         Featured Products
       </h1>
       <div className="home-cards">
-        {[1, 2, 3, 4].map((e) => (
-          <FakeCard />
+        {featured.map((product) => (
+          <MDBCard className="text-black home-card">
+          <MDBCardImage
+            src={require(`../assets/${product.productImg}`)}
+            position="top"
+            alt="Apple Computer"
+          />
+          <MDBCardBody>
+            <div className="text-center">
+              <MDBCardTitle>{product.title}</MDBCardTitle>
+              <p className="text-muted mb-4">{product.author}</p>
+            </div>
+    
+            <div className="d-flex justify-content-between total font-weight-bold mt-4">
+              <span>Price</span>
+              <span>{product.price}$</span>
+            </div>
+          </MDBCardBody>
+        </MDBCard>
         ))}
       </div>
       <div>
