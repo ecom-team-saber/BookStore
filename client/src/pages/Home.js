@@ -1,7 +1,7 @@
 import gradient from "../assets/gradient.png";
 import fiction from "../assets/fiction.jpeg";
 import philosophy from "../assets/philosophy.jpeg";
-
+import { Link } from "react-router-dom";
 import React, { useEffect } from 'react';
 import {
   MDBBtn,
@@ -70,14 +70,16 @@ export default function Home() {
       <div className="home-cards">
         {featured.map((product) => (
           <MDBCard className="text-black home-card">
+          <Link to={`/product/${product.id}`}>
           <MDBCardImage
             src={require(`../assets/${product.productImg}`)}
             position="top"
             alt="Apple Computer"
           />
+          </Link>
           <MDBCardBody>
             <div className="text-center">
-              <MDBCardTitle>{product.title}</MDBCardTitle>
+              <MDBCardTitle><Link to={`/product/${product.id}`}>{product.title}</Link></MDBCardTitle>
               <p className="text-muted mb-4">{product.author}</p>
             </div>
     
