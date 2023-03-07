@@ -6,6 +6,7 @@ import { Twirl as Hamburger } from "hamburger-react";
 import { fetchProducts } from "../store/slices/productsSlice";
 import axios from "axios";
 
+// New comment
 export default function Shop() {
   const [page, setPage] = useState("");
   const location = useLocation();
@@ -13,27 +14,27 @@ export default function Shop() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const products = useSelector((state) => state.products);
-  const params = location.search.split("=")[1];
+  const query = location.search.split("=")[1];
   useEffect(() => {
     let isCategory = false;
     let idx;
     categories.map((category, index) => {
-      if (category.toLowerCase() === params) {
+      if (category.toLowerCase() === query) {
         isCategory = true;
         idx = index;
       }
     });
     if (isCategory) {
-      dispatch(fetchProducts({ category: params }));
+      dispatch(fetchProducts({ category: query }));
       setPage(categories[idx] + " Books");
     } else if (location.search.split("=")[0] === "?name") {
-      dispatch(fetchProducts({ name: params }));
-      setPage("Showing results for search: " + params);
+      dispatch(fetchProducts({ name: query }));
+      setPage("Showing results for search: " + query);
     } else {
       setPage("All Books");
       dispatch(fetchProducts());
     }
-  }, [params]);
+  }, [query]);
   const [showNavExternal, setShowNavExternal] = useState(false);
   const categories = [
     "Non-Fiction",
