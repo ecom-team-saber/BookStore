@@ -16,7 +16,7 @@ import {
 
 import { fetchSingleProduct } from "../store/slices/productsSlice";
 
-function ProductView() {
+export default function ProductView() {
   const [img, setImg] = useState(null);
   const dispatch = useDispatch();
   const product = useSelector((state) => state.products);
@@ -128,5 +128,3 @@ function ProductView() {
     );
   }
 }
-
-export default ProductView;
