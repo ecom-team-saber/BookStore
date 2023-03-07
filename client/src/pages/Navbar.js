@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   MDBContainer,
   MDBNavbar,
@@ -15,10 +16,13 @@ import {
   MDBCollapse,
 } from "mdb-react-ui-kit";
 import { Twirl as Hamburger } from "hamburger-react";
-import Cart from "./Cart";
+import { Link } from "react-router-dom";
 export default function Navbar() {
+  const navigate = useNavigate();
+  const [search, setSearch] = useState("");
   const [showBasic, setShowBasic] = useState(false);
   const productPages = [
+    "All",
     "Fiction",
     "Non-Fiction",
     "History",
@@ -27,6 +31,16 @@ export default function Navbar() {
     "Manga",
     "Philosophy",
   ];
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/products?name=${search}`);
+    setSearch("");
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit(e);
+    }
+  };
 
   return (
     <MDBNavbar expand="lg" light bgColor="light">
@@ -75,9 +89,14 @@ export default function Navbar() {
                   <MDBDropdownMenu>
                     {productPages.map((e, idx) => {
                       return (
-                        <MDBDropdownItem key={idx} link href="/products">
-                          {e}
-                        </MDBDropdownItem>
+                        <li key={idx}>
+                          <Link
+                            className="dropdown-item"
+                            to={`/products?category=${e.toLowerCase()}`}
+                          >
+                            {e}
+                          </Link>
+                        </li>
                       );
                     })}
                   </MDBDropdownMenu>
@@ -85,19 +104,29 @@ export default function Navbar() {
               </MDBNavbarItem>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <input
-                className="mobile-search"
-                type="text"
-                placeholder="search here..."
-              />
+              <form onSubmit={handleSubmit}>
+                <input
+                  className="mobile-search"
+                  type="text"
+                  placeholder="search here..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                />
+              </form>
             </MDBNavbarItem>
           </MDBNavbarNav>
           <MDBContainer>
-            <input
-              type="text"
-              className="search-hover"
-              placeholder="search here..."
-            />
+            <form onSubmit={handleSubmit}>
+              <input
+                className="search-hover"
+                type="text"
+                placeholder="search here..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
+            </form>
           </MDBContainer>
           <MDBNavbarItem>
             <a href="/cart">

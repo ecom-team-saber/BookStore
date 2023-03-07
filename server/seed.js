@@ -1119,7 +1119,7 @@ const userAddress = [
 
 const categories = [
   "fiction",
-  "nonfiction",
+  "non-fiction",
   "history",
   "sci-fi",
   "horror",
