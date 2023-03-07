@@ -5,7 +5,22 @@ const { Product, Category } = require("../db/index.js");
 
 router.get("/", async (req, res, next) => {
   try {
+    const name = req.query.name;
     const category = req.query.category;
+    if (name) {
+      const products = await Product.findAll({
+        where: {
+          title: {
+            [Op.like]: `%${name}%`,
+          },
+        },
+        include: {
+          model: Category,
+        },
+      });
+      if (!products) res.status(404).json({ message: "No products found" });
+      res.send(products);
+    }
     if (category) {
       const products = await Product.findAll({
         include: {
@@ -51,23 +66,23 @@ router.get("/featured", async (req, res, next) => {
     next(e);
   }
 });
-router.get("/name", async (req, res, next) => {
-  try {
-    const name = req.query.name;
-    const products = await Product.findAll({
-      where: {
-        title: {
-          [Op.like]: `%${name}%`,
-        },
-      },
-    });
-    if (!products) res.status(404).json({ message: "No products found" });
-    res.send(products);
-  } catch (e) {
-    console.log(e);
-    next(e);
-  }
-});
+// router.get("/name", async (req, res, next) => {
+//   try {
+//     const name = req.query.name;
+//     const products = await Product.findAll({
+//       where: {
+//         title: {
+//           [Op.like]: `%${name}%`,
+//         },
+//       },
+//     });
+//     if (!products) res.status(404).json({ message: "No products found" });
+//     res.send(products);
+//   } catch (e) {
+//     console.log(e);
+//     next(e);
+//   }
+// });
 
 router.get("/:id", async (req, res, next) => {
   try {

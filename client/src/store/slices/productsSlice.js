@@ -15,9 +15,7 @@ export const fetchProducts = createAsyncThunk(
         return data;
       } else {
         const { data } = await instance.get("/api/products", {
-          params: {
-            category: category,
-          },
+          params: category,
         });
         return data;
       }
