@@ -50,7 +50,15 @@ function ProductView() {
                 rippleTag="div"
                 className="bg-image rounded hover-overlay"
               >
-                <img src={require(`../assets/${img}`)} alt=".." />
+                <MDBCardImage
+                  src={require(`../assets/${img}`)}
+                  fluid
+                  className="w-100"
+                  style={{
+                    borderTopLeftRadius: "15px",
+                    borderTopRightRadius: "15px",
+                  }}
+                />
                 <a href="#!">
                   <div className="mask"></div>
                 </a>
