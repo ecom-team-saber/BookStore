@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   MDBContainer,
   MDBNavbar,
@@ -17,10 +18,12 @@ import {
 } from "mdb-react-ui-kit";
 import { Twirl as Hamburger } from "hamburger-react";
 import { Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
 export default function Navbar() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [showBasic, setShowBasic] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const productPages = [
     "All",
     "Fiction",
@@ -162,6 +165,11 @@ export default function Navbar() {
                       document.cookie =
                         "token" +
                         "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+                      removeCookie("fullName");
+                      removeCookie("email");
+                      removeCookie("mobile");
+                      removeCookie("address");
+                      removeCookie("city");
                     }}
                     href="/"
                   >
