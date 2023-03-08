@@ -141,6 +141,13 @@ const userSlice = createSlice({
       state.user = action.payload;
       state.status = null;
     });
+    builder
+      .addCase(editUser.fulfilled, (state, { payload }) => {
+        state.user = payload;
+      })
+      .addCase(editUser.pending, (state, { payload }) => {
+        state.status = "loading";
+      });
   },
 });
 
