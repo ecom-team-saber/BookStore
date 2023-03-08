@@ -46,6 +46,14 @@ export const fetchCart = createAsyncThunk("user/fetchCart", async () => {
     console.error(e);
   }
 });
+export const editUser = createAsyncThunk("user/editUser", async (arr) => {
+  try {
+    const { data } = await instance.put("/api/users/profile", arr);
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+});
 
 const userSlice = createSlice({
   name: "user",
@@ -95,6 +103,13 @@ const userSlice = createSlice({
         state.status = null;
       })
       .addCase(fetchCart.pending, (state) => {
+        state.status = "loading";
+      });
+    builder
+      .addCase(editUser.fulfilled, (state, { payload }) => {
+        state.user = payload;
+      })
+      .addCase(editUser.pending, (state, { payload }) => {
         state.status = "loading";
       });
   },

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   MDBContainer,
   MDBTabs,
@@ -20,6 +21,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleJustifyClick = (value) => {
     if (value === justifyActive) {
@@ -32,18 +34,20 @@ export default function Login() {
   const handleLogin = async (evt) => {
     evt.preventDefault();
     dispatch(logIn({ username, password }));
-    setUsername('');
-    setPassword('');
-  }
+    setUsername("");
+    setPassword("");
+    navigate("/profile/#");
+  };
 
   const handleSignUp = async (evt) => {
     evt.preventDefault();
     dispatch(signUp({ username, password, name, email }));
-    setUsername('');
-    setPassword('');
-    setName('');
-    setEmail('');
-  }
+    setUsername("");
+    setPassword("");
+    setName("");
+    setEmail("");
+    navigate("/profile/#");
+  };
 
   return (
     <MDBContainer className="p-3 my-5 d-flex flex-column w-50">
@@ -88,7 +92,7 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <MDBBtn className="mb-4 w-100" type="submit" id="login">
+            <MDBBtn className="mb-4 w-100" type="submit">
               Sign in
             </MDBBtn>
           </form>
@@ -125,7 +129,7 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <MDBBtn className="mb-4 w-100" type="submit" id="signup">
+            <MDBBtn className="mb-4 w-100" type="submit">
               Sign up
             </MDBBtn>
           </form>
