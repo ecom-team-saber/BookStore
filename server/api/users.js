@@ -50,6 +50,12 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.cookie("token", "", { expires: new Date(Date.now()), httpOnly: true });
+  res.send("Logged out");
+});
+
 //GET /api/users/
 router.get("/", requireToken, async (req, res, next) => {
   try {

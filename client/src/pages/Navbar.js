@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { logOut } from "../store/slices/userSlice";
+import { useDispatch } from "react-redux";
 import {
   MDBContainer,
   MDBNavbar,
@@ -21,6 +23,7 @@ import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 export default function Navbar() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [showBasic, setShowBasic] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
@@ -161,10 +164,8 @@ export default function Navbar() {
                 <MDBDropdownItem>
                   <a
                     className="nav-link"
-                    onClick={() => {
-                      document.cookie =
-                        "token" +
-                        "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+                    onClick={async () => {
+                      await dispatch(logOut());
                       removeCookie("fullName");
                       removeCookie("email");
                       removeCookie("mobile");

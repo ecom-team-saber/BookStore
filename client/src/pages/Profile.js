@@ -49,16 +49,16 @@ export default function ProfilePage() {
          if (data.name) {
            dispatch(fetchUser());
            dispatch(fetchOrders());
-            setCookie("fullName", user.user.name, { path: "/profile" });
-            setCookie("email", user.user.email, { path: "/profile" });
+            setCookie("fullName", user.user.name, { path: "/" });
+            setCookie("email", user.user.email, { path: "/" });
             setCookie("mobile", user.user.userAddress.mobile, {
-              path: "/profile",
+              path: "/",
             });
             setCookie("address", user.user.userAddress.addressLine1, {
-              path: "/profile",
+              path: "/",
             });
             setCookie("city", user.user.userAddress.city, {
-              path: "/profile",
+              path: "/",
             });
          }
        } catch (err) {
@@ -90,16 +90,16 @@ export default function ProfilePage() {
         setAddress(user.user.userAddress.addressLine1);
         setCity(user.user.userAddress.city);
 
-        setCookie("fullName", fullName, { path: "/profile" });
-        setCookie("email", email, { path: "/profile" });
+        setCookie("fullName", fullName, { path: "/" });
+        setCookie("email", email, { path: "/" });
         setCookie("mobile", mobile, {
-          path: "/profile",
+          path: "/",
         });
         setCookie("address", address, {
-          path: "/profile",
+          path: "/",
         });
         setCookie("city", city, {
-          path: "/profile",
+          path: "/",
         });
        }
       }
