@@ -4,6 +4,9 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const UserAddress = require("./UserAddress");
+const Order = require("./Order");
+const OrderItem = require("./OrderItem");
+const Product = require("./Product");
 dotenv.config();
 const SALT_ROUNDS = 5;
 
@@ -50,7 +53,7 @@ User.prototype.generateToken = function () {
  * classMethods
  */
 User.authenticate = async function ({ username, password }) {
-  const user = await this.findOne({ where: { username } });
+  const user = await User.findOne({ where: { username } });
   if (!user || !(await user.correctPassword(password))) {
     const error = Error("Incorrect username/password");
     error.status = 401;
@@ -62,13 +65,28 @@ User.authenticate = async function ({ username, password }) {
 User.findByToken = async function (token) {
   try {
     const { id } = jwt.verify(token, process.env.JWT);
-    const user = await User.findOne({
-      where: {
-        id: id,
-      },
+    console.log(id);
+    const user = await User.findByPk(id, {
       include: [
         {
           model: UserAddress,
+        },
+        {
+          model: Order,
+          where: {
+            status: "cart",
+          },
+
+          include: [
+            {
+              model: OrderItem,
+              include: [
+                {
+                  model: Product,
+                },
+              ],
+            },
+          ],
         },
       ],
     });

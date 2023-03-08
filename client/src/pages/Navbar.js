@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { logOut } from "../store/slices/userSlice";
 import { useDispatch } from "react-redux";
 import {
@@ -22,6 +21,7 @@ import { Twirl as Hamburger } from "hamburger-react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 export default function Navbar() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
@@ -162,20 +162,15 @@ export default function Navbar() {
                   </a>
                 </MDBDropdownItem>
                 <MDBDropdownItem>
-                  <a
+                  <Link
                     className="nav-link"
                     onClick={async () => {
                       await dispatch(logOut());
-                      removeCookie("fullName");
-                      removeCookie("email");
-                      removeCookie("mobile");
-                      removeCookie("address");
-                      removeCookie("city");
                     }}
-                    href="/"
+                    to="/"
                   >
                     Log out
-                  </a>
+                  </Link>
                 </MDBDropdownItem>
               </MDBDropdownMenu>
             </MDBDropdown>
