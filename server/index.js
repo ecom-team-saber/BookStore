@@ -9,13 +9,14 @@ const products = require("./api/products");
 const orders = require("./api/orders");
 const users = require("./api/users");
 const app = express();
+const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
-
+dotenv.config();
 app.use(morgan("tiny"));
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3000" || process.env.CORS,
     credentials: true,
   })
 );
