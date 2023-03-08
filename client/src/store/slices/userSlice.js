@@ -110,14 +110,7 @@ export const editUser = createAsyncThunk("user/editUser", async (arr) => {
     console.error(e);
   }
 });
-export const logOut = createAsyncThunk("user/logout", async () => {
-  try {
-    const { data } = await instance.get("/api/users/logout");
-    return data;
-  } catch (e) {
-    throw e;
-  }
-});
+
 
 const userSlice = createSlice({
   name: "user",
