@@ -36,6 +36,7 @@ export default function Shop() {
       dispatch(fetchProducts());
     }
   }, [query]);
+  //
   const [showNavExternal, setShowNavExternal] = useState(false);
   const categories = [
     "Non-Fiction",
