@@ -32,6 +32,7 @@ router.get("/", async (req, res, next) => {
 // logic to add item
 router.post("/", async (req, res, next) => {
   try {
+    console.log(req.body);
     const user = await User.findByToken(req.cookies.token);
     const order = await Order.findOne({
       where: {
@@ -82,6 +83,22 @@ router.put("/", async (req, res, next) => {
     next(err);
   }
 });
+router.put("/submit", async (req, res, next) => {
+  try {
+    const user = await User.findByToken(req.cookies.token);
+    const cart = await Order.findOne({
+      where: {
+        userId: user.id,
+        status: "cart",
+      },
+    });
+    await cart.update({ status: "pending" });
+    const newCart = await Order.create({ userId: user.id, status: "cart" });
+    res.json(newCart);
+  } catch (e) {
+    next(e);
+  }
+});
 
 // logic to remove an item object -- send in req.body
 router.delete("/", async (req, res, next) => {
@@ -107,5 +124,12 @@ router.delete("/:userId/all", async (req, res, next) => {
     res.sendStatus(204);
   } catch (err) {
     next(err);
+  }
+});
+
+router.get("/guest-items", async (req, res, next) => {
+  try {
+  } catch (e) {
+    next(e);
   }
 });

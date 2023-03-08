@@ -149,6 +149,30 @@ export default function Cart() {
       });
       if (!cookieObj.includes("guest-cart")) {
         setStatusMessage("Your Cart is empty...");
+      } else {
+        const cookieArr = document.cookie.split(";");
+        let cartCookie = "";
+        cookieArr.map((e) => {
+          if (e.startsWith("guest-cart=")) cartCookie = e;
+        });
+        cartCookie = JSON.parse(cartCookie.split("=")[1]);
+        let initCart = [];
+        const getGuestCart = async () => {
+          await Promise.all(
+            cartCookie.map(async (e) => {
+              const { data } = await axios.get(
+                `http://localhost:1347/api/products/${e.productId}`
+              );
+              initCart.push({
+                id: data.id,
+                quantity: e.quantity,
+                Product: data,
+              });
+            })
+          );
+          setCart(initCart);
+        };
+        getGuestCart();
       }
     }
     setCheckUser(1);
@@ -156,20 +180,44 @@ export default function Cart() {
 
   const handleCheckout = (e) => {
     e.preventDefault();
+    const submitGuest = async () => {
+      await Promise.all(
+        cart.map(async (e) => {
+          let inv = e.Product.inventory - e.quantity;
+          const { data } = await axios.put(
+            `http://localhost:1347/api/products/${e.Product.id}`,
+            { inventory: inv }
+          );
+        })
+      );
+    };
     const id = cart[0].orderId;
-    dispatch(
-      checkoutFunction([
-        {
-          userId: user.user.id,
-          addressLine1: address,
-          city: city,
-          country: country,
-          mobile: mobile,
-          postalCode: postalCode,
-        },
-        id,
-      ])
-    );
+    if (user.user.name) {
+      dispatch(
+        checkoutFunction([
+          {
+            userId: user.user.id,
+            addressLine1: address,
+            city: city,
+            country: country,
+            mobile: mobile,
+            postalCode: postalCode,
+          },
+          id,
+        ])
+      );
+
+      setStatusMessage("Thank you for your order!");
+      setCart();
+      submitGuest();
+    } else {
+      setStatusMessage("Thank you for your order!");
+      setCart();
+      submitGuest();
+      document.cookie =
+        "guest-cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+
     setAddress("");
     setCity("");
     setCountry("");
@@ -192,7 +240,7 @@ export default function Cart() {
         <button
           className="btn btn-dark"
           onClick={() => {
-            navigate("/products");
+            navigate("/products?category=all");
           }}
         >
           View Products

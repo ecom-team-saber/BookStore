@@ -57,7 +57,7 @@ export default function Home() {
       >
         <div
           onClick={() => {
-            navigate("/products");
+            navigate("/products?category=all");
           }}
           id="intro-example"
           className="p-5 text-center bg-image img-fluid"

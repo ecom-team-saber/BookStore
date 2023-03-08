@@ -12,6 +12,7 @@ import {
   MDBInput,
 } from "mdb-react-ui-kit";
 import { logIn, signUp } from "../store/slices/userSlice";
+import { checkForCookie } from "./components/addToCart";
 
 export default function Login() {
   const [justifyActive, setJustifyActive] = useState("tab1");
@@ -33,15 +34,32 @@ export default function Login() {
 
   const handleLogin = async (evt) => {
     evt.preventDefault();
-    dispatch(logIn({ username, password }));
+    if (checkForCookie()) {
+      const vals = checkForCookie();
+      dispatch(logIn({ vals: vals, info: { username, password } }));
+    } else {
+      const vals = [];
+      dispatch(logIn({ vals: vals, info: { username, password } }));
+    }
     setUsername("");
     setPassword("");
-    navigate("/profile/#");
+    navigate("/");
   };
 
   const handleSignUp = async (evt) => {
     evt.preventDefault();
-    dispatch(signUp({ username, password, name, email }));
+
+    if (checkForCookie()) {
+      const vals = checkForCookie();
+      dispatch(
+        signUp({ vals: vals, info: { username, password, name, email } })
+      );
+    } else {
+      const vals = [];
+      dispatch(
+        signUp({ vals: vals, info: { username, password, name, email } })
+      );
+    }
     setUsername("");
     setPassword("");
     setName("");
