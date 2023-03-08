@@ -43,7 +43,7 @@ export default function Login() {
     }
     setUsername("");
     setPassword("");
-    navigate("/");
+    navigate("/profile");
   };
 
   const handleSignUp = async (evt) => {
@@ -64,7 +64,7 @@ export default function Login() {
     setPassword("");
     setName("");
     setEmail("");
-    navigate("/profile/#");
+    navigate("/profile");
   };
 
   return (

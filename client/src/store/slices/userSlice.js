@@ -125,7 +125,7 @@ const userSlice = createSlice({
     builder
       .addCase(fetchUser.fulfilled, (state, { payload }) => {
         state.user = payload;
-        state.status = null;
+        state.status = "finished";
       })
       .addCase(fetchUser.pending, (state) => {
         state.status = "loading";
@@ -182,6 +182,7 @@ const userSlice = createSlice({
     builder
       .addCase(editUser.fulfilled, (state, { payload }) => {
         state.user = payload;
+        state.status = "finished";
       })
       .addCase(editUser.pending, (state, { payload }) => {
         state.status = "loading";

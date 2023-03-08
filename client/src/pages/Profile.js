@@ -18,7 +18,6 @@ import {
   MDBListGroupItem,
   MDBInput,
 } from "mdb-react-ui-kit";
-import { useCookies } from "react-cookie";
 import axios from "axios";
 
 export default function ProfilePage() {
@@ -30,105 +29,56 @@ export default function ProfilePage() {
   const [mobile, setMobile] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
-  const [edit, setEdit] = useState(false);
-   const [count, setCount] = useState(0);
-   const [cookies, setCookie] = useCookies(["user"]);
+  const [edit, setEdit] = useState(0);
 
-   const user = useSelector((state) => state.user);
-   console.log(user);
+  const user = useSelector((state) => state.user);
 
-   useEffect(() => {
-     const validate = async () => {
-       try {
-         const { data } = await axios.get(
-           "http://localhost:1347/api/users/profile",
-           {
-             withCredentials: true,
-           }
-         );
-         if (data.name) {
-           dispatch(fetchUser());
-           dispatch(fetchOrders());
-            setCookie("fullName", user.user.name, { path: "/" });
-            setCookie("email", user.user.email, { path: "/" });
-            setCookie("mobile", user.user.userAddress.mobile, {
-              path: "/",
-            });
-            setCookie("address", user.user.userAddress.addressLine1, {
-              path: "/",
-            });
-            setCookie("city", user.user.userAddress.city, {
-              path: "/",
-            });
-         }
-       } catch (err) {
-         navigate("/login");
-       }
-     };
-     validate();
-   }, []);
 
-   useEffect(() => {
-     if (Object.keys(user.user).length === 0 && count > 0) {
-       navigate("/login");
-     }
-     setCount(1);
-   }, [user]);
+  useEffect(() => {
+    const validate = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:1347/api/users/profile",
+          {
+            withCredentials: true,
+          }
+        );
+        if (data.name) {
+          dispatch(fetchUser());
+          dispatch(fetchOrders());
+        }
+      } catch (err) {
+        navigate("/login");
+      }
+    };
+    validate();
+  }, []);
 
-   useEffect(() => {
-    if (Object.keys(cookies).length > 4 && !(Object.values(cookies).includes(undefined))) {
-      setFullName(cookies.fullName);
-      setEmail(cookies.email);
-      setMobile(cookies.mobile);
-      setAddress(cookies.address);
-      setCity(cookies.city);
-    } else {
-       if (count === 1) {
+
+  useEffect(() => {
+    if (user.user.userAddress) {
+      if (!Object.values(user.user.userAddress).includes('undefined')) {
         setFullName(user.user.name);
         setEmail(user.user.email);
         setMobile(user.user.userAddress.mobile);
         setAddress(user.user.userAddress.addressLine1);
         setCity(user.user.userAddress.city);
-
-        setCookie("fullName", fullName, { path: "/" });
-        setCookie("email", email, { path: "/" });
-        setCookie("mobile", mobile, {
-          path: "/",
-        });
-        setCookie("address", address, {
-          path: "/",
-        });
-        setCookie("city", city, {
-          path: "/",
-        });
-       }
       }
-   }, [cookies]);
+    }
+  }, [user.user]);
 
   const handleEdit = async (evt) => {
     evt.preventDefault();
-    await dispatch(
+    setEdit(0);
+    dispatch(
       editUser([
         { fullName, email },
         { mobile, address, city },
       ])
     );
-    setCookie("fullName", fullName, { path: "/profile" });
-    setCookie("email", email, { path: "/profile" });
-    setCookie("mobile", mobile, {
-      path: "/profile",
-    });
-    setCookie("address", address, {
-      path: "/profile",
-    });
-    setCookie("city", city, {
-      path: "/profile",
-    });
-
-    setEdit(false);
   };
 
-  if (Object.keys(user.user).length > 0) {
+  if (user.status !== "loading") {
     return (
       <section style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5">
@@ -159,12 +109,10 @@ export default function ProfilePage() {
                   />
                   <p className="text-muted mb-1"></p>
                   <p className="mb-4">{fullName}</p>
-                  <p className="text-muted mb-4">
-                    {city}
-                  </p>
+                  <p className="text-muted mb-4">{city}</p>
                   <div className="d-flex justify-content-center mb-2">
                     <MDBBtn
-                      onClick={() => (edit ? setEdit(false) : setEdit(true))}
+                      onClick={() => (edit ? setEdit(0) : setEdit(1))}
                     >
                       Edit
                     </MDBBtn>
@@ -222,7 +170,7 @@ export default function ProfilePage() {
                           />
                         ) : (
                           <MDBCardText className="text-muted">
-                            {cookies.fullName}
+                            {fullName}
                           </MDBCardText>
                         )}
                       </MDBCol>
@@ -243,7 +191,7 @@ export default function ProfilePage() {
                           />
                         ) : (
                           <MDBCardText className="text-muted">
-                            {cookies.email}
+                            {email}
                           </MDBCardText>
                         )}
                       </MDBCol>
@@ -323,17 +271,17 @@ export default function ProfilePage() {
               </MDBCard>
 
               <MDBRow>
-                {user.orders.map((order) => {
+                {user.orders.map((order, idx) => {
                   return (
-                    <MDBCol md="6" className="mb-4">
+                    <MDBCol md="6" className="mb-4" key={idx}>
                       <MDBCard className="mb-5 mb-md-0">
                         <MDBCardBody>
                           <MDBCardText className="mb-4">
                             Order from {order.createdAt.slice(0, 10)}
                           </MDBCardText>
-                          {order.orderItems.map((book) => {
+                          {order.orderItems.map((book, idx) => {
                             return (
-                              <>
+                              <div key={idx}>
                                 <MDBCardText
                                   className="mb-1"
                                   style={{ fontSize: ".90rem" }}
@@ -346,7 +294,7 @@ export default function ProfilePage() {
                                 >
                                   by: {book.Product.author}
                                 </MDBCardText>
-                              </>
+                              </div>
                             );
                           })}
                         </MDBCardBody>
