@@ -1,5 +1,4 @@
 /** @format */
-
 const express = require("express");
 const router = express.Router();
 
@@ -44,13 +43,30 @@ router.post("/", async (req, res, next) => {
         include: { model: Product },
       },
     });
-    const cart = await OrderItem.create({
-      orderId: order.id,
-      productId: req.body.productId,
-      quantity: req.body.quantity,
+    const [cart, created] = await OrderItem.findOrCreate({
+      where: {
+        orderId: order.id,
+        productId: req.body.productId,
+      },
+      defaults: {
+        quantity: 1,
+      },
     });
+    if (!created) {
+      const newQuant = cart.quantity + req.body.quantity;
+      let inv;
+      order.orderItems.map((item) => {
+        if (item.Product.id === req.body.productId) {
+          inv = item.Product.inventory;
+        }
+      });
+      if (newQuant <= inv) {
+        await cart.update({ quantity: newQuant });
+      }
+    }
     res.json(cart);
   } catch (err) {
+    console.log(err);
     next(err);
   }
 });

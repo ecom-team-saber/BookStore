@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import { addToCart } from "./components/addToCart";
 import {
   MDBContainer,
   MDBRow,
@@ -33,12 +33,6 @@ export default function ProductView() {
   }, [singleProduct]);
   console.log(img);
 
-  const addToCart = (e) => {
-    axios.post("http://localhost:1347/api/cart", {
-      productId: e.id,
-      quantity: 1,
-    });
-  };
   if (img) {
     return (
       <MDBContainer fluid className="my-5">

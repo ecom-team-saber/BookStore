@@ -1100,14 +1100,6 @@ const userAddress = [
     userId: 4,
   },
   {
-    addressLine1: "68524 Anthes Crossing",
-    city: "Tampa",
-    postalCode: "33615",
-    country: "United States",
-    mobile: "813-189-5252",
-    userId: 1,
-  },
-  {
     addressLine1: "71908 Heath Terrace",
     city: "Baltimore",
     postalCode: "21239",
@@ -1161,6 +1153,45 @@ const seed = async () => {
   }
 };
 seed();
+
+// if (Object.keys(user.user).length === 0 && checkUser) {
+//   console.log("no user");
+//   const cookies = document.cookie.split(";");
+//   let cookieObj = [];
+//   cookies.forEach((e) => {
+//     const [name, val] = e.trim().split("=");
+//     cookieObj.push(name);
+//   });
+//   //
+//   if (!cookieObj.includes("guest-cart")) {
+//     setStatusMessage("Your Cart is empty...");
+//   }
+// }
+// if (
+//   Object.keys(user.cart).length === 0 &&
+//   Object.keys(user.user).length > 0 &&
+//   checkUser
+// ) {
+//   console.log("user, but empty cart");
+
+//   setStatusMessage("Your cart is empty...");
+// } else if (Object.keys(user.user.orders[0]).length > 0 && checkUser) {
+//   // setCart(user.cart.orderItems);
+//   if (user.user.userAddress) {
+//     setAddress(user.user.userAddress.addressLine1);
+//     setPostalCode(user.user.userAddress.postalCode);
+//     setCountry(user.user.userAddress.country);
+//     setCity(user.user.userAddress.city);
+//     setMobile(user.user.userAddress.mobile);
+//   }
+//   let val = 0;
+//   user.cart.orderItems.map((e) => {
+//     val += parseFloat(e.Product.price) * e.quantity;
+//     return;
+//   });
+//   setPrice(val);
+// }
+// setCheckUser(1);
 
 // const genItems = () => {
 //   let orderItems = [];
