@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { MDBIcon, MDBCollapse } from "mdb-react-ui-kit";
 import { Twirl as Hamburger } from "hamburger-react";
 import { fetchProducts } from "../store/slices/productsSlice";
+import { addToCart } from "./components/addToCart";
 import axios from "axios";
 
 // New comment
@@ -54,13 +55,6 @@ export default function Shop() {
 
   const handleNavigate = (e) => {
     navigate(`/products/${e.target.id}`);
-  };
-
-  const addToCart = (e) => {
-    axios.post("http://localhost:1347/api/cart", {
-      productId: e.id,
-      quantity: 1,
-    });
   };
 
   return (
@@ -121,7 +115,7 @@ export default function Shop() {
                     <img src={require(`../assets/${e.productImg}`)} alt=".." />
                     <div className="overlay">
                       <button
-                        onClick={() => addToCart(e.id)}
+                        onClick={() => addToCart(e)}
                         className="quick-cart"
                       >
                         <MDBIcon fas icon="shopping-cart" size="sm" />

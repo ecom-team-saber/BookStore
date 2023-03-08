@@ -19,6 +19,7 @@ const requireToken = async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
   try {
     const token = await User.authenticate(req.body);
+    console.log(token);
     const user = await User.findByToken(token);
     res.cookie("token", token, {
       expires: new Date(Date.now() + ms),
@@ -43,6 +44,7 @@ router.post("/signup", async (req, res, next) => {
     res.send(user);
   } catch (err) {
     if (err.name === "SequelizeUniqueConstraintError") {
+      console.log(err);
       res.status(401).send("User already exists");
     } else {
       next(err);
@@ -61,9 +63,14 @@ router.get("/", requireToken, async (req, res, next) => {
     next(err);
   }
 });
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.cookie("token", "", { expires: new Date(Date.now()), httpOnly: true });
+  res.send("Logged out");
+});
 
 //GET /api/users/profile/
-router.get("/profile", requireToken, async (req, res, next) => {
+router.get("/profile", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.cookies.token);
     const userAddress = await UserAddress.findByPk(user.id);
@@ -71,6 +78,22 @@ router.get("/profile", requireToken, async (req, res, next) => {
     res.json(user);
   } catch (err) {
     next(err);
+  }
+});
+router.put("/address", async (req, res, next) => {
+  try {
+    id = req.body.userId;
+    const [address, created] = await UserAddress.findOrCreate({
+      where: { userId: id },
+      defaults: req.body,
+    });
+    console.log(created, address);
+    if (!created) {
+      await address.update(req.body);
+    }
+    res.json(address);
+  } catch (err) {
+    console.error(err);
   }
 });
 
