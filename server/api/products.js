@@ -8,20 +8,27 @@ const { Product, Category } = require("../db/index.js");
 router.get("/", async (req, res, next) => {
   try {
     const category = req.query.category;
-    if (category) {
+    if (!category) {
       const products = await Product.findAll({
         include: {
           model: Category,
-          where: {
-            name: category,
-          },
         },
       });
       res.json(products);
-    } else {
+    } else if (category.category) {
       const products = await Product.findAll({
         include: {
           model: Category,
+          where: { name: category.category },
+        },
+      });
+      res.json(products);
+    } else if (category.name) {
+      const products = await Product.findAll({
+        where: {
+          title: {
+            [Op.like]: `%${category.name}%`,
+          },
         },
       });
       res.json(products);
@@ -71,18 +78,6 @@ router.get("/name", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
-  try {
-    const id = req.params.id;
-    const product = await Product.findByPk(id);
-    if (!product) res.status(404).json({ message: "Product not found" });
-    res.json(product);
-  } catch (e) {
-    console.error(e);
-    next(e);
-  }
-});
-
 router.put("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -99,6 +94,18 @@ router.post("/", async (req, res, next) => {
     const newProduct = await Product.create(req.body);
     res.json(newProduct);
   } catch (e) {
+    next(e);
+  }
+});
+router.get("/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const product = await Product.findByPk(id);
+    console.log(product);
+    if (!product) res.status(404).json({ message: "Product not found" });
+    res.json(product);
+  } catch (e) {
+    console.error(e);
     next(e);
   }
 });

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import {
@@ -99,6 +100,7 @@ const Product = ({ product }) => {
 };
 
 export default function Admin() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
   const allProducts = useSelector((state) => state.products.products);
@@ -110,6 +112,24 @@ export default function Admin() {
   const [category, setCategory] = useState("");
   const [productImg, setProductImg] = useState("images/memoirs-of-hadrian.jpg");
 
+  useEffect(() => {
+    const checkForAdmin = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:1347/api/users/profile",
+          { withCredentials: true }
+        );
+        if (data.name && data.userType === "admin") {
+          dispatch(fetchProducts());
+        } else {
+          navigate("/");
+        }
+      } catch {
+        navigate("/");
+      }
+    };
+    checkForAdmin();
+  }, []);
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);

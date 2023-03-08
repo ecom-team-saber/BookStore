@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser, fetchOrders, editUser } from "../store/slices/userSlice";
+import axios from "axios";
 import {
   MDBCol,
   MDBContainer,
@@ -24,21 +25,37 @@ export default function ProfilePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [userCheck, setUserChecked] = useState(false);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [edit, setEdit] = useState(false);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState();
   const [cookies, setCookie] = useCookies(["user"]);
 
   const user = useSelector((state) => state.user);
 
-
   useEffect(() => {
-    dispatch(fetchUser());
-    dispatch(fetchOrders());
+    const validate = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:1347/api/users/profile",
+          {
+            withCredentials: true,
+          }
+        );
+        if (data.name) {
+          dispatch(fetchUser());
+          dispatch(fetchOrders());
+        }
+      } catch (err) {
+        navigate("/login");
+      }
+    };
+    validate();
   }, []);
 
   useEffect(() => {
@@ -56,17 +73,21 @@ export default function ProfilePage() {
       setAddress(cookies.address);
       setCity(cookies.city);
     } else {
-      setCookie("Name", user.user.name, { path: "/profile" });
-      setCookie("email", user.user.email, { path: "/profile" });
-      setCookie("mobile", user.user.userAddress.mobile, { path: "/profile" });
-      setCookie("address", user.user.userAddress.addressLine1, { path: "/profile" });
-      setCookie("city", user.user.userAddress.city, { path: "/profile" });
+      if (count === 1) {
+        setCookie("Name", user.user.name, { path: "/profile" });
+        setCookie("email", user.user.email, { path: "/profile" });
+        setCookie("mobile", user.user.userAddress.mobile, { path: "/profile" });
+        setCookie("address", user.user.userAddress.addressLine1, {
+          path: "/profile",
+        });
+        setCookie("city", user.user.userAddress.city, { path: "/profile" });
 
-      setName(cookies.Name);
-      setEmail(cookies.email);
-      setMobile(cookies.mobile);
-      setAddress(cookies.address);
-      setCity(cookies.city);
+        setName(cookies.Name);
+        setEmail(cookies.email);
+        setMobile(cookies.mobile);
+        setAddress(cookies.address);
+        setCity(cookies.city);
+      }
     }
   }, [cookies]);
 

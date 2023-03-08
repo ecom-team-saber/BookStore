@@ -37,7 +37,22 @@ export const checkoutFunction = createAsyncThunk(
 );
 export const logIn = createAsyncThunk("user/login", async (userInfo) => {
   try {
-    const { data } = await instance.post("/api/users/login", userInfo);
+    const { data } = await instance.post("/api/users/login", userInfo.info);
+    if (userInfo.vals.length > 0 && data.name) {
+      try {
+        await Promise.all(
+          userInfo.vals.map(async (e) => {
+            const res = await instance.post("/api/cart", e);
+          })
+        );
+
+        document.cookie =
+          "guest-cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      } catch (e) {
+        throw e;
+      }
+    }
+
     return data;
   } catch (e) {
     console.error(e);
@@ -45,7 +60,21 @@ export const logIn = createAsyncThunk("user/login", async (userInfo) => {
 });
 export const signUp = createAsyncThunk("user/signup", async (userInfo) => {
   try {
-    const { data } = await instance.post("/api/users/signup", userInfo);
+    const { data } = await instance.post("/api/users/signup", userInfo.info);
+    if (data.name && userInfo.vals.length > 0) {
+      try {
+        await Promise.all(
+          userInfo.vals.map(async (e) => {
+            const res = await instance.post("/api/cart", e);
+          })
+        );
+
+        document.cookie =
+          "guest-cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      } catch (e) {
+        throw e;
+      }
+    }
     return data;
   } catch (e) {
     console.error(e);
@@ -149,13 +178,6 @@ const userSlice = createSlice({
       state.user = action.payload;
       state.status = null;
     });
-    builder
-      .addCase(editUser.fulfilled, (state, { payload }) => {
-        state.user = payload;
-      })
-      .addCase(editUser.pending, (state, { payload }) => {
-        state.status = "loading";
-      });
     builder
       .addCase(editUser.fulfilled, (state, { payload }) => {
         state.user = payload;

@@ -47,3 +47,16 @@ export const addToCart = async (e) => {
     }
   }
 };
+
+export const checkForCookie = () => {
+  const cookieArr = document.cookie.split(";");
+  const cookies = document.cookie.split(";").map((e) => e.trim().split("=")[0]);
+  if (cookies.includes("guest-cart")) {
+    let cartCookie = "";
+    cookieArr.map((e) => {
+      if (e.startsWith("guest-cart=")) cartCookie = e;
+    });
+    cartCookie = JSON.parse(cartCookie.split("=")[1]);
+    return cartCookie;
+  }
+};

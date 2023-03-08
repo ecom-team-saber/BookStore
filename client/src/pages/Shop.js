@@ -31,7 +31,7 @@ export default function Shop() {
     } else if (location.search.split("=")[0] === "?name") {
       dispatch(fetchProducts({ name: query }));
       setPage("Showing results for search: " + query);
-    } else {
+    } else if (query === "all") {
       setPage("All Books");
       dispatch(fetchProducts());
     }
