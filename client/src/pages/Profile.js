@@ -19,12 +19,13 @@ import {
   MDBInput,
 } from "mdb-react-ui-kit";
 import { useCookies } from "react-cookie";
+import axios from "axios";
 
 export default function ProfilePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [address, setAddress] = useState("");
@@ -34,11 +35,31 @@ export default function ProfilePage() {
   const [cookies, setCookie] = useCookies(["user"]);
 
   const user = useSelector((state) => state.user);
-
+  console.log(cookies);
 
   useEffect(() => {
-    dispatch(fetchUser());
-    dispatch(fetchOrders());
+    const validate = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:1347/api/users/profile",
+          {
+            withCredentials: true,
+          }
+        );
+        if (data.name) {
+          dispatch(fetchUser());
+          dispatch(fetchOrders());
+          setFullName(user.user.name);
+          setEmail(user.user.email);
+          setMobile(user.user.userAddress.mobile);
+          setAddress(user.user.userAddress.addressLine1);
+          setCity(user.user.userAddress.city);
+        }
+      } catch (err) {
+        navigate("/login");
+      }
+    };
+    validate();
   }, []);
 
   useEffect(() => {
@@ -49,41 +70,63 @@ export default function ProfilePage() {
   }, [user]);
 
   useEffect(() => {
-    if (Object.keys(cookies).length > 4) {
-      setName(cookies.Name);
+    if (
+      Object.keys(cookies).length > 1 &&
+      !Object.values(cookies).includes(undefined)
+    ) {
+      setFullName(cookies.fullName);
       setEmail(cookies.email);
       setMobile(cookies.mobile);
       setAddress(cookies.address);
       setCity(cookies.city);
     } else {
-      setCookie("Name", user.user.name, { path: "/profile" });
-      setCookie("email", user.user.email, { path: "/profile" });
-      setCookie("mobile", user.user.userAddress.mobile, { path: "/profile" });
-      setCookie("address", user.user.userAddress.addressLine1, { path: "/profile" });
-      setCookie("city", user.user.userAddress.city, { path: "/profile" });
+      if (count === 1) {
+        setFullName(user.user.name);
+        setEmail(user.user.email);
+        setMobile(user.user.userAddress.mobile);
+        setAddress(user.user.userAddress.addressLine1);
+        setCity(user.user.userAddress.city);
 
-      setName(cookies.Name);
-      setEmail(cookies.email);
-      setMobile(cookies.mobile);
-      setAddress(cookies.address);
-      setCity(cookies.city);
+        setCookie("fullName", user.user.name, { path: "/profile" });
+        setCookie("email", user.user.email, { path: "/profile" });
+        setCookie("mobile", user.user.userAddress.mobile, {
+          path: "/profile",
+        });
+        setCookie("address", user.user.userAddress.addressLine1, {
+          path: "/profile",
+        });
+        setCookie("city", user.user.userAddress.city, {
+          path: "/profile",
+        });
+        // setFullName(cookies.fullName);
+        // setEmail(cookies.email);
+        // setMobile(cookies.mobile);
+        // setAddress(cookies.address);
+        // setCity(cookies.city);
+      }
     }
   }, [cookies]);
 
   const handleEdit = async (evt) => {
-    evt.preventDefault();
+    // evt.preventDefault();
+    setCookie("fullName", fullName, { path: "/profile" });
+    setCookie("email", email, { path: "/profile" });
+    setCookie("mobile", mobile, {
+      path: "/profile",
+    });
+    setCookie("address", address, {
+      path: "/profile",
+    });
+    setCookie("city", city, {
+      path: "/profile",
+    });
     await dispatch(
       editUser([
-        { name, email },
+        { fullName, email },
         { mobile, address, city },
       ])
     );
 
-    setCookie("Name", name, { path: "/profile" });
-    setCookie("email", email, { path: "/profile" });
-    setCookie("mobile", mobile, { path: "/profile" });
-    setCookie("address", address, { path: "/profile" });
-    setCookie("city", city, { path: "/profile" });
     setEdit(false);
   };
 
@@ -110,15 +153,15 @@ export default function ProfilePage() {
               <MDBCard className="mb-4">
                 <MDBCardBody className="text-center">
                   <MDBCardImage
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5.webp"
+                    src={`https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1.webp`}
                     alt="avatar"
                     className="rounded-circle"
                     style={{ width: "150px" }}
                     fluid
                   />
                   <p className="text-muted mb-1"></p>
-                  <p className="mb-4">{cookies.Name}</p>
-                  <p className="text-muted mb-4">{cookies.city}</p>
+                  <p className="mb-4">{fullName}</p>
+                  <p className="text-muted mb-4">{city}</p>
                   <div className="d-flex justify-content-center mb-2">
                     <MDBBtn
                       onClick={() => (edit ? setEdit(false) : setEdit(true))}
@@ -172,14 +215,14 @@ export default function ProfilePage() {
                         {edit ? (
                           <MDBInput
                             type="text"
-                            name="name"
-                            label={cookies.Name}
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            name="fullName"
+                            label={cookies.fullName}
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
                           />
                         ) : (
                           <MDBCardText className="text-muted">
-                            {name}
+                            {fullName}
                           </MDBCardText>
                         )}
                       </MDBCol>
@@ -271,7 +314,7 @@ export default function ProfilePage() {
                   </MDBCardBody>
                   {edit ? (
                     <MDBBtn className="mb-0 w-100" type="submit">
-                      Sumbit changes
+                      Submit changes
                     </MDBBtn>
                   ) : (
                     <></>
