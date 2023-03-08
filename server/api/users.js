@@ -52,6 +52,12 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.cookie("token", "", { expires: new Date(Date.now()), httpOnly: true });
+  res.send("Logged out");
+});
+
 //GET /api/users/
 router.get("/", requireToken, async (req, res, next) => {
   try {
@@ -97,25 +103,39 @@ router.put("/address", async (req, res, next) => {
   }
 });
 
-//GET /api/users/:id
-router.get("/:id", requireToken, async (req, res, next) => {
+//PUT /api/users/profile/
+router.put("/profile", requireToken, async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.id);
-    res.json(user);
+    const user = await User.findByToken(req.cookies.token);
+    const userAddress = await UserAddress.findByPk(user.id);
+    res.json([
+      await user.update(req.body[0]),
+      await userAddress.update(req.body[1]),
+    ]);
   } catch (err) {
     next(err);
   }
 });
 
-//PUT /api/users/:id
-router.put("/:id", requireToken, async (req, res, next) => {
-  try {
-    const user = await User.findByPk(req.params.id);
-    res.json(await user.update(req.body));
-  } catch (err) {
-    next(err);
-  }
-});
+// //GET /api/users/:id
+// router.get("/:id", requireToken, async (req, res, next) => {
+//   try {
+//     const user = await User.findByPk(req.params.id);
+//     res.json(user);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
+
+// //PUT /api/users/:id
+// router.put("/:id", requireToken, async (req, res, next) => {
+//   try {
+//     const user = await User.findByPk(req.params.id);
+//     res.json(await user.update(req.body));
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 //DELETE /api/users/:id
 router.delete("/:id", requireToken, async (req, res, next) => {

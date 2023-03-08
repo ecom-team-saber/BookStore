@@ -19,11 +19,14 @@ import {
 } from "mdb-react-ui-kit";
 import { Twirl as Hamburger } from "hamburger-react";
 import { Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
 export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [showBasic, setShowBasic] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const productPages = [
     "All",
     "Fiction",
