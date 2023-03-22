@@ -171,6 +171,11 @@ export default function Cart() {
             })
           );
           setCart(initCart);
+          let val = 0;
+          initCart.map((e) => {
+            val += parseFloat(e.Product.price) * e.quantity;
+          });
+          setPrice(val);
         };
         getGuestCart();
       }
